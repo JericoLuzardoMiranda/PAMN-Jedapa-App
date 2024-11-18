@@ -18,16 +18,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.example.jedapaappf1.ui.theme.JedapaAppF1Theme
 
 @Composable
-fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier,
-                     onSignUpClick: () -> Unit,
-                     onLoginClick: () -> Unit) {
+fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier, onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit
+) {
     val image = painterResource(R.drawable.mockup)
     val image_logo = painterResource(R.drawable.logo)
     val image_logo_F1 = painterResource(R.drawable.logo_f1)
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
+
+    // Estado para controlar la visibilidad del menú
+    val isMenuExpanded = remember { mutableStateOf(false) }
+    val isResultsExpanded = remember { mutableStateOf(false) }
+    val isNewsExpanded = remember { mutableStateOf(false) }
 
     val noticias = listOf(
         Noticia(
@@ -52,16 +60,12 @@ fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier,
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
+            modifier = Modifier.fillMaxSize().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Primera fila
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -69,18 +73,14 @@ fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier,
                     painter = image_logo,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .width(120.dp)
-                        .padding(start = 20.dp)
+                    modifier = Modifier.width(120.dp).padding(start = 20.dp)
                 )
 
                 Spacer(modifier = Modifier.width(60.dp))
 
                 Button(
                     onClick = { onSignUpClick() },
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .height(38.dp),
+                    modifier = Modifier.padding(5.dp).height(38.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFD3D3D3),
                         contentColor = Color(0xFF808080)
@@ -108,9 +108,7 @@ fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier,
 
             // Segunda fila
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFF294D61))
+                modifier = Modifier.fillMaxWidth().background(Color(0xFF294D61))
                     .padding(vertical = 10.dp, horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -122,53 +120,96 @@ fun JedapaF1AppImage(name: String, modifier: Modifier = Modifier,
                 )
 
                 Text(
-                    text = "Menu",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontFamily = formula1Font
+                    text = "Menu", color = Color.White,
+                    fontSize = 18.sp, fontFamily = formula1Font,
+                    modifier = Modifier.clickable {
+                        isMenuExpanded.value = !isMenuExpanded.value
+                    }
                 )
             }
 
-            // Contenido principal
+            // Mostrar el menú desplegable si está expandido
+            if (isMenuExpanded.value) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().background(Color(0xFF6DA5C0))
+                        .padding(16.dp)
+                ) {
+
+                    Text(
+                        text = "News",
+                        fontSize = 16.sp,
+                        fontFamily = formula1Font,
+                        color = Color(0xFFFFFFFF),
+                        modifier = Modifier.clickable {
+                            isNewsExpanded.value = !isNewsExpanded.value
+                        }
+                    )
+
+                    if (isNewsExpanded.value) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
+                        ) {
+                            Text("Interviews", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                            Text("Race summaries", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                            Text("Teams and Drivers News", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                            Text("Games", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                        }
+                    }
+
+                    Text("Calendar", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+
+                    Text(
+                        text = "Results", fontSize = 16.sp, fontFamily = formula1Font,
+                        color = Color(0xFFFFFFFF),
+                        modifier = Modifier.clickable {
+                            isResultsExpanded.value = !isResultsExpanded.value
+                        }
+                    )
+
+                    if (isResultsExpanded.value) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp)
+                        ) {
+                            Text("Teams", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                            Text("Drivers", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                        }
+                    }
+
+                    Text("Teams", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+                    Text("Drivers", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+                    Text("Formula Learning", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+                }
+            }
+
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
+                modifier = Modifier.fillMaxSize().padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Imagen destacada
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
                         painter = image,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
+                        modifier = Modifier.fillMaxWidth().height(300.dp)
                     )
                 }
 
-                // Texto de bienvenida
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "Bienvenido al mundo de la Fórmula 1",
-                        color = Color.Red,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold
+                        color = Color.Red, fontSize = 15.sp, fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = "Disfruta las últimas noticias y eventos",
-                        color = Color.Black,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        color = Color.Black, fontSize = 20.sp, fontWeight = FontWeight.Bold
                     )
                 }
 
