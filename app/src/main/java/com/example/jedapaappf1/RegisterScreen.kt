@@ -105,7 +105,9 @@ fun RegisterScreen(navController: NavHostController) {
                 // Botón de registrarse
                 Button(
                     onClick = {
-                        navController.navigate("home")
+                        if (password == confirmPassword) {
+                            navController.navigate("register_confirmation")
+                        }
                     },
                     modifier = Modifier.width(200.dp).padding(bottom = 20.dp, top = 20.dp),
                     colors = ButtonDefaults.buttonColors(
