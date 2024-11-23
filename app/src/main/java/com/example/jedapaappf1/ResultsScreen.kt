@@ -36,7 +36,7 @@ fun ResultsScreen(navController: NavHostController) {
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(modifier = Modifier, { navController.navigate("signup") }, { navController.navigate("login") })
+            MyHeader(navController = navController)
             ////////////////////////////////////////////////////////////////////
 
             //////////////////////////RESULTS TABLE/////////////////////////////

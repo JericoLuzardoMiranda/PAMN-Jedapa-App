@@ -28,11 +28,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @Composable
-fun MyHeader(modifier: Modifier = Modifier, onSignUpClick: () -> Unit,
-             onLoginClick: () -> Unit
-){
+fun MyHeader(navController: NavHostController){
+
+    val onSignUpClick = { navController.navigate("signup") }
+    val onLoginClick = { navController.navigate("login") }
 
     val image_logo = painterResource(R.drawable.logo)
     val image_logo_F1 = painterResource(R.drawable.logo_f1)
@@ -152,13 +154,13 @@ fun MyHeader(modifier: Modifier = Modifier, onSignUpClick: () -> Unit,
                         .fillMaxWidth()
                         .padding(start = 16.dp)
                 ) {
-                    Text("Teams", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
-                    Text("Drivers", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                    Text("Teams", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF), modifier = Modifier.clickable { navController.navigate("teamsResults") })
+                    Text("Drivers", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF), modifier = Modifier.clickable { navController.navigate("driversResults") })
                 }
             }
 
-            Text("Teams", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
-            Text("Drivers", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+            Text("Teams", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("teams") })
+            Text("Drivers", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("drivers") })
             Text("Formula Learning", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
         }
     }
