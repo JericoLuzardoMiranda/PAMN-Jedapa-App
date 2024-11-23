@@ -34,7 +34,6 @@ fun MyHeader(modifier: Modifier = Modifier, onSignUpClick: () -> Unit,
              onLoginClick: () -> Unit
 ){
 
-
     val image_logo = painterResource(R.drawable.logo)
     val image_logo_F1 = painterResource(R.drawable.logo_f1)
     val formula1Font = FontFamily(Font(R.font.formula1_bold))

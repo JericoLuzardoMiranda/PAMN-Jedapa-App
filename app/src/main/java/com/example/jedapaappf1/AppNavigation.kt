@@ -16,6 +16,7 @@ fun AppNavigation() {
         composable("signup") { RegisterScreen(navController) }
         composable("register_confirmation") { RegisterConfirmationScreen(navController) }
         composable("login") { SignUpScreen(navController) }
+        composable("results"){ResultsScreen(navController)}
     }
 }
 
