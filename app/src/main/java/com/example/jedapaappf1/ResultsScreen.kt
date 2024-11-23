@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,11 +52,11 @@ fun ResultsScreen(navController: NavHostController) {
                         )
                 }
 
-                Row {
-                    Text("Position", modifier = Modifier.padding(horizontal = 20.dp), fontWeight = FontWeight.Bold)
-                    Text("Name", modifier = Modifier.padding(horizontal = 20.dp), fontWeight = FontWeight.Bold)
-                    Text("Points", modifier = Modifier.padding(horizontal = 20.dp), fontWeight = FontWeight.Bold)
-                    Text("Nationality", modifier = Modifier.padding(horizontal = 20.dp), fontWeight = FontWeight.Bold)
+                Row (modifier = Modifier.wrapContentSize().fillMaxWidth()) {
+                    Text("Position", modifier = Modifier.padding(horizontal = 10.dp).width(70.dp), fontWeight = FontWeight.Bold)
+                    Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
+                    Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(40.dp), fontWeight = FontWeight.Bold)
+                    Text("Nationality", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
                 }
 
                 Column(
@@ -64,12 +65,12 @@ fun ResultsScreen(navController: NavHostController) {
                 ){
 
                     ///////////////////////INFORMACIÓN DE EJEMPLO/////////////////////////////
-                    AddRow(1, "Max Verstappen", 342, "Dutch")
-                    AddRow(2, "Sergio Pérez", 342, "Dutch")
-                    AddRow(3, "Fernando Alonso", 342, "Dutch")
-                    AddRow(4, "Lance Stroll", 342, "Dutch")
-                    AddRow(5, "Carlos Sainz", 342, "Dutch")
-                    AddRow(6, "Charles Leclerc", 342, "Dutch")
+                    AddRow(1, "Max Verstappen", 342, "Netherlands")
+                    AddRow(2, "Sergio Pérez", 342, "Mexico")
+                    AddRow(3, "Fernando Alonso", 342, "Spain")
+                    AddRow(4, "Lance Stroll", 342, "Canada")
+                    AddRow(5, "Carlos Sainz", 342, "Spain")
+                    AddRow(6, "Charles Leclerc", 342, "Monaco")
                     AddRow(7, "Max Verstappen", 342, "Dutch")
                     AddRow(8, "Max Verstappen", 342, "Dutch")
                     AddRow(9, "Max Verstappen", 342, "Dutch")
@@ -97,10 +98,10 @@ fun AddRow(position: Int, name:String, points: Int, nationality:String){
         else -> Color(0xFFD7E0F7) // Azul claro
     }
     Row (modifier = Modifier.background(color=rowColor).padding(vertical = 7.dp).wrapContentSize().fillMaxWidth()){
-        Text("$position", modifier = Modifier.padding(horizontal = 20.dp))
-        Text(name, modifier = Modifier.padding(horizontal = 20.dp))
-        Text("$points", modifier = Modifier.padding(horizontal = 20.dp))
-        Text(nationality, modifier = Modifier.padding(horizontal = 20.dp))
+        Text("$position", modifier = Modifier.padding(horizontal = 10.dp).width(20.dp))
+        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(130.dp))
+        Text("$points", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp))
+        Text(nationality, modifier = Modifier.padding(horizontal = 10.dp).width(100.dp))
     }
 }
 
