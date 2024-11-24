@@ -11,10 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun FormulaLearningScreen(navController: NavHostController){
+fun FormulaLearningScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()){
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -26,7 +27,7 @@ fun FormulaLearningScreen(navController: NavHostController){
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController, currentScreen = "Formula Learning", showBackArrow = true)
+            MyHeader(navController = navController, currentScreen = "Formula Learning", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
             Text("Formula Learning Page")

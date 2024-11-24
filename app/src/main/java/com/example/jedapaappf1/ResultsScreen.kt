@@ -19,10 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun ResultsScreen(navController: NavHostController) {
+fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
 
 
     Box(
@@ -36,7 +37,7 @@ fun ResultsScreen(navController: NavHostController) {
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController, currentScreen = "Results", showBackArrow = true)
+            MyHeader(navController = navController, currentScreen = "Results", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
             //////////////////////////RESULTS TABLE/////////////////////////////

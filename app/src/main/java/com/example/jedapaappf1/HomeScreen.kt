@@ -19,10 +19,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
+
     val image = painterResource(R.drawable.mockup)
     val noticias = listOf(
         Noticia(
@@ -53,7 +55,7 @@ fun HomeScreen(navController: NavHostController) {
         ) {
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController, currentScreen = "Home", showBackArrow = false)
+            MyHeader(navController = navController, currentScreen = "Home", showBackArrow = false, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
             Column(

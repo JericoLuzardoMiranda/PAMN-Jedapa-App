@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,13 +33,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun MyHeader(navController: NavHostController, currentScreen: String, showBackArrow: Boolean = true){
+fun MyHeader(navController: NavHostController, currentScreen: String, showBackArrow: Boolean = true, userViewModel: UserViewModel = viewModel()){
+    val isUserLoggedIn = userViewModel.isUserLoggedIn
 
     val onSignUpClick = { navController.navigate("signup") }
     val onLoginClick = { navController.navigate("login") }
+    val onUserProfileClick = { navController.navigate("user_profile") }
+    val onLogOutClick = {
+        userViewModel.logOut()
+        navController.navigate("home")  // Redirigir al Home después de cerrar sesión
+    }
 
     val image_logo = painterResource(R.drawable.logo)
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
@@ -45,11 +55,12 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
     val isMenuExpanded = remember { mutableStateOf(false) }
     val isResultsExpanded = remember { mutableStateOf(false) }
     val isNewsExpanded = remember { mutableStateOf(false) }
+    val isUserMenuExpanded = remember { mutableStateOf(false) }
 
     // Primera fila
     Row(
         modifier = Modifier.fillMaxWidth().height(50.dp),
-        horizontalArrangement = Arrangement.Start,
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -59,34 +70,84 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             modifier = Modifier.width(120.dp).padding(start = 20.dp)
         )
 
-        Spacer(modifier = Modifier.width(60.dp))
+        // Spacer(modifier = Modifier.width(60.dp))
 
-        Button(
-            onClick = { onSignUpClick() },
-            modifier = Modifier.padding(5.dp).height(38.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFD3D3D3),
-                contentColor = Color(0xFF808080)
-            ),
-            shape = RoundedCornerShape(25.dp)
-        ) {
-            Text("Sign Up")
+        if (!isUserLoggedIn) {
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = { onSignUpClick() },
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .height(38.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD3D3D3),
+                        contentColor = Color(0xFF808080)
+                    ),
+                    shape = RoundedCornerShape(25.dp)
+                ) {
+                    Text("Sign Up")
+                }
+
+                Button(
+                    onClick = { onLoginClick() },
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .height(38.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD7E7F7),
+                        contentColor = Color(0xFF0F969C),
+                    ),
+                    border = BorderStroke(1.dp, Color(0xFF0F969C)),
+                    shape = RoundedCornerShape(25.dp)
+                ) {
+                    Text("Log in")
+                }
+            }
+        } else {
+            // Si el usuario está logueado, mostramos el icono de usuario con menú desplegable
+            Column {
+                Image(
+                    painter = painterResource(R.drawable.user_icon),
+                    contentDescription = "User Profile",
+                    modifier = Modifier
+                        .clickable { isUserMenuExpanded.value = true }
+                        .padding(end = 16.dp)
+                        .size(30.dp)
+                )
+
+                // DropdownMenu para usuario logueado
+                DropdownMenu(
+                    expanded = isUserMenuExpanded.value,
+                    onDismissRequest = { isUserMenuExpanded.value = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Profile") },
+                        onClick = {
+                            isUserMenuExpanded.value = false
+                            onUserProfileClick()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Settings") },
+                        onClick = {
+                            isUserMenuExpanded.value = false
+                            navController.navigate("settings")
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Log out") },
+                        onClick = {
+                            isUserMenuExpanded.value = false
+                            onLogOutClick()
+                        }
+                    )
+                }
+            }
         }
 
-        Button(
-            onClick = { onLoginClick() },
-            modifier = Modifier
-                .padding(5.dp)
-                .height(38.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFD7E7F7),
-                contentColor = Color(0xFF0F969C),
-            ),
-            border = BorderStroke(1.dp, Color(0xFF0F969C)),
-            shape = RoundedCornerShape(25.dp)
-        ) {
-            Text("Log in")
-        }
     }
 
     // Segunda fila

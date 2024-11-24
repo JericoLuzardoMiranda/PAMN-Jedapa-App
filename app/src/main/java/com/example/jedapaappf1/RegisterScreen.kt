@@ -1,4 +1,3 @@
-// Archivo: RegisterScreen.kt
 package com.example.jedapaappf1
 
 import androidx.compose.foundation.Image
@@ -20,13 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun RegisterScreen(navController: NavHostController) {
+fun RegisterScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +105,11 @@ fun RegisterScreen(navController: NavHostController) {
                 Button(
                     onClick = {
                         if (password == confirmPassword) {
-                            navController.navigate("register_confirmation")
+                            userViewModel.logIn()  // Cambiar el estado de inicio de sesión
+                            navController.navigate("register_confirmation") {
+                                // Añadir este popBackStack para limpiar la pila de navegación
+                                popUpTo("home") { inclusive = true }
+                            }
                         }
                     },
                     modifier = Modifier.width(200.dp).padding(bottom = 20.dp, top = 20.dp),
@@ -143,10 +146,3 @@ fun RegisterScreen(navController: NavHostController) {
         }
     }
 }
-
-@Preview(showBackground = true, widthDp = 400, heightDp = 800)
-@Composable
-fun RegisterScreenPreview() {
-    RegisterScreen(navController = NavHostController(LocalContext.current))
-}
-

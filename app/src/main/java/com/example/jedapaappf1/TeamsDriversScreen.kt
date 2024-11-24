@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-
-fun TeamsDriversScreen(navController: NavHostController){
+fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()){
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -27,7 +27,7 @@ fun TeamsDriversScreen(navController: NavHostController){
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController, currentScreen = "Teams & Drivers", showBackArrow = true)
+            MyHeader(navController = navController, currentScreen = "Teams & Drivers", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
             Text("Teams/Drivers Page")

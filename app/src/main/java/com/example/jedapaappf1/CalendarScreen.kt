@@ -19,12 +19,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 data class Circuito(val nombre: String, val imagenId: Int)
 
 @Composable
-fun CalendarScreen(navController: NavHostController) {
+fun CalendarScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
 
     val circuitos = listOf(
@@ -57,7 +58,7 @@ fun CalendarScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController, currentScreen = "Calendar", showBackArrow = true)
+            MyHeader(navController = navController, currentScreen = "Calendar", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
             Text(
