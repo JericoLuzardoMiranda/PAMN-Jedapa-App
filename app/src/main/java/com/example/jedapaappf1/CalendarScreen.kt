@@ -48,7 +48,7 @@ fun CalendarScreen(navController: NavHostController) {
         Image(
             painter = painterResource(id = R.drawable.calendar_background),
             contentDescription = "Background",
-            modifier = Modifier.fillMaxSize().padding(top = 100.dp),
+            modifier = Modifier.fillMaxSize().padding(top = 90.dp),
             contentScale = ContentScale.Crop
         )
 

@@ -15,7 +15,7 @@ fun AppNavigation() {
         composable("home") { HomeScreen(navController) }
         composable("signup") { RegisterScreen(navController) }
         composable("register_confirmation") { RegisterConfirmationScreen(navController) }
-        composable("login") { SignUpScreen(navController) }
+        composable("login") { LoginScreen(navController) }
         composable("driversResults"){ResultsScreen(navController)}      //Falta añadir una variable
         composable("teamsResults"){ResultsScreen(navController)}        //Falta añadir una variable
         composable("teams"){ TeamsDriversScreen(navController) }        //Falta añadir una variable

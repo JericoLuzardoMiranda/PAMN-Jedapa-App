@@ -1,4 +1,4 @@
-// Archivo: SignUpScreen.kt
+// Archivo: LoginScreen.kt
 package com.example.jedapaappf1
 
 import androidx.compose.foundation.Image
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -137,6 +137,6 @@ fun SignUpScreen(navController: NavHostController) {
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
-fun SignUpPreview() {
-    SignUpScreen(navController = NavHostController(LocalContext.current))
+fun LoginPreview() {
+    LoginScreen(navController = NavHostController(LocalContext.current))
 }
