@@ -20,6 +20,7 @@ fun AppNavigation() {
         composable("teamsResults"){ResultsScreen(navController)}        //Falta añadir una variable
         composable("teams"){ TeamsDriversScreen(navController) }        //Falta añadir una variable
         composable("drivers"){ TeamsDriversScreen(navController) }      //Falta añadir una variable
+        composable("calendar"){ CalendarScreen(navController) }      //Falta añadir una variable
     }
 }
 

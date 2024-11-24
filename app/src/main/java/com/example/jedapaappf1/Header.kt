@@ -138,7 +138,7 @@ fun MyHeader(navController: NavHostController){
                 }
             }
 
-            Text("Calendar", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+            Text("Calendar", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("calendar") })
 
             Text(
                 text = "Results", fontSize = 16.sp, fontFamily = formula1Font,
