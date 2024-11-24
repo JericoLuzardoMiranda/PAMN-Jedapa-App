@@ -23,21 +23,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun MyHeader(navController: NavHostController){
+fun MyHeader(navController: NavHostController, currentScreen: String, showBackArrow: Boolean = true){
 
     val onSignUpClick = { navController.navigate("signup") }
     val onLoginClick = { navController.navigate("login") }
 
     val image_logo = painterResource(R.drawable.logo)
-    val image_logo_F1 = painterResource(R.drawable.logo_f1)
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
 
     // Estado para controlar la visibilidad del menú
@@ -90,25 +91,51 @@ fun MyHeader(navController: NavHostController){
 
     // Segunda fila
     Row(
-        modifier = Modifier.fillMaxWidth().background(Color(0xFF294D61))
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF294D61))
             .padding(vertical = 10.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Image(
-            painter = image_logo_F1,
-            contentDescription = null,
-            modifier = Modifier.width(55.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+
+            if (showBackArrow) {
+                Image(
+                    painter = painterResource(R.drawable.back_arrow),
+                    contentDescription = "Back Arrow",
+                    modifier = Modifier
+                        .clickable { navController.popBackStack() }
+                        .padding(end = 8.dp)
+                        .width(24.dp)
+                        .height(24.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+            Text(
+                text = currentScreen,
+                color = Color.White,
+                fontSize = 18.sp,
+                fontFamily = formula1Font,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
 
         Text(
-            text = "Menu", color = Color.White,
-            fontSize = 18.sp, fontFamily = formula1Font,
+            text = "Menu",
+            color = Color.White,
+            fontSize = 18.sp,
+            fontFamily = formula1Font,
             modifier = Modifier.clickable {
                 isMenuExpanded.value = !isMenuExpanded.value
             }
         )
     }
+
 
     // Mostrar el menú desplegable si está expandido
     if (isMenuExpanded.value) {

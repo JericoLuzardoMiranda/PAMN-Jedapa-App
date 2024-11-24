@@ -56,7 +56,9 @@ fun CalendarScreen(navController: NavHostController) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MyHeader(navController = navController)
+            /////////////////////////////HEADER/////////////////////////////////
+            MyHeader(navController = navController, currentScreen = "Calendar", showBackArrow = true)
+            ////////////////////////////////////////////////////////////////////
 
             Text(
                 text = "Calendar", color = Color.Black,

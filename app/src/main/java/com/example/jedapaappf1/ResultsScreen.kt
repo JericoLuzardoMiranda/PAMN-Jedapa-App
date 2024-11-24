@@ -36,7 +36,7 @@ fun ResultsScreen(navController: NavHostController) {
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController)
+            MyHeader(navController = navController, currentScreen = "Results", showBackArrow = true)
             ////////////////////////////////////////////////////////////////////
 
             //////////////////////////RESULTS TABLE/////////////////////////////

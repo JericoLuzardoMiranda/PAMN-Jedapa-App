@@ -26,7 +26,7 @@ fun FormulaLearningScreen(navController: NavHostController){
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController)
+            MyHeader(navController = navController, currentScreen = "Formula Learning", showBackArrow = true)
             ////////////////////////////////////////////////////////////////////
 
             Text("Formula Learning Page")

@@ -27,7 +27,7 @@ fun TeamsDriversScreen(navController: NavHostController){
         ){
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController)
+            MyHeader(navController = navController, currentScreen = "Teams & Drivers", showBackArrow = true)
             ////////////////////////////////////////////////////////////////////
 
             Text("Teams/Drivers Page")

@@ -53,7 +53,7 @@ fun HomeScreen(navController: NavHostController) {
         ) {
 
             /////////////////////////////HEADER/////////////////////////////////
-            MyHeader(navController = navController)
+            MyHeader(navController = navController, currentScreen = "Home", showBackArrow = false)
             ////////////////////////////////////////////////////////////////////
 
             Column(
