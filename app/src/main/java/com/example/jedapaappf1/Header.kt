@@ -161,7 +161,7 @@ fun MyHeader(navController: NavHostController){
 
             Text("Teams", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("teams") })
             Text("Drivers", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("drivers") })
-            Text("Formula Learning", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF))
+            Text("Formula Learning", fontSize = 16.sp, fontFamily = formula1Font, color = Color(0xFFFFFFFF), modifier = Modifier.clickable { navController.navigate("formulaLearning") })
         }
     }
 }
