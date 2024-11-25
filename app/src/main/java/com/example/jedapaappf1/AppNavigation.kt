@@ -24,6 +24,7 @@ fun AppNavigation() {
         composable("drivers"){ TeamsDriversScreen(navController, userViewModel) }      //Falta añadir una variable
         composable("calendar"){ CalendarScreen(navController, userViewModel) }
         composable("formulaLearning"){ FormulaLearningScreen(navController, userViewModel) }
+        composable("addFriends"){ AddFriendsScreen(navController, userViewModel) }
     }
 }
 

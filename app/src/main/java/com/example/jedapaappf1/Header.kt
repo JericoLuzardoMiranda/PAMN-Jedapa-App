@@ -70,8 +70,6 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             modifier = Modifier.width(120.dp).padding(start = 20.dp)
         )
 
-        // Spacer(modifier = Modifier.width(60.dp))
-
         if (!isUserLoggedIn) {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -131,10 +129,10 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Settings") },
+                        text = { Text("Add friends") },
                         onClick = {
                             isUserMenuExpanded.value = false
-                            navController.navigate("settings")
+                            navController.navigate("addFriends")
                         }
                     )
                     DropdownMenuItem(
