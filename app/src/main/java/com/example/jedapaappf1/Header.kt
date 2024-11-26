@@ -217,7 +217,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
                 ) {
-                    Text("Interviews", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
+                    Text("Interviews", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF), modifier = Modifier.clickable { navController.navigate("typeNews") })
                     Text("Race summaries", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
                     Text("Teams and Drivers News", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))
                     Text("Games", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF))

@@ -26,6 +26,7 @@ fun AppNavigation() {
         composable("formulaLearning"){ FormulaLearningScreen(navController, userViewModel) }
         composable("addFriends"){ AddFriendsScreen(navController, userViewModel) }
         composable("secondaryNews"){ SecondaryNewsScreen(navController, userViewModel) }
+        composable("typeNews"){ TypeNewsScreen(navController, userViewModel) }
     }
 }
 
