@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +26,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
-
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -46,11 +48,11 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 Row {
-                    Text("2023 DRIVERS RESULTS",
+                    Text(
+                        text = "2023 DRIVERS RESULTS", color = Color.Black,
                         modifier = Modifier.padding(vertical = 20.dp),
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                        )
+                        fontSize = 25.sp, fontFamily = formula1Font
+                    )
                 }
 
                 Row (modifier = Modifier.wrapContentSize().fillMaxWidth()) {

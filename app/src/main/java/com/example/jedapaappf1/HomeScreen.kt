@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,7 +27,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun HomeScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
-
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val image = painterResource(R.drawable.mockup)
     val noticias = listOf(
         Noticia(
@@ -82,7 +84,7 @@ fun HomeScreen(navController: NavHostController, userViewModel: UserViewModel = 
                 ) {
                     Text(
                         text = "Bienvenido al mundo de la Fórmula 1",
-                        color = Color.Red, fontSize = 15.sp, fontWeight = FontWeight.Bold
+                        color = Color.Red, fontSize = 15.sp, fontFamily = formula1Font
                     )
                     Text(
                         text = "Disfruta las últimas noticias y eventos",
