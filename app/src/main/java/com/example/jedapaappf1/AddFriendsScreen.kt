@@ -41,4 +41,3 @@ fun AddFriendsScreen(navController: NavHostController, userViewModel: UserViewMo
 fun AddFriendsScreenPreview() {
     AddFriendsScreen(navController = NavHostController(LocalContext.current))
 }
-

@@ -69,7 +69,7 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
                     Image(
                         painter = image,
                         contentDescription = null, contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth().height(300.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp)
                     )
 
                     // Cuadro de texto por debajo de la imagen
@@ -97,12 +97,12 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
                         painter = image,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(300.dp).height(150.dp).padding(top = 30.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     )
 
                     Box(
                         modifier = Modifier
-                            .width(300.dp).background(Color(0xFF0F969C))
+                            .fillMaxWidth().background(Color(0xFF0F969C))
                             .padding(8.dp).align(Alignment.CenterHorizontally)
                     ) {
                         Text(
@@ -118,12 +118,12 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
                         painter = image,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(300.dp).height(150.dp).padding(top = 30.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     )
 
                     Box(
                         modifier = Modifier
-                            .width(300.dp).background(Color(0xFF0F969C))
+                            .fillMaxWidth().background(Color(0xFF0F969C))
                             .padding(8.dp).align(Alignment.CenterHorizontally)
                     ) {
                         Text(
@@ -139,12 +139,12 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
                         painter = image,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(300.dp).height(150.dp).padding(top = 30.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     )
 
                     Box(
                         modifier = Modifier
-                            .width(300.dp).background(Color(0xFF0F969C))
+                            .fillMaxWidth().background(Color(0xFF0F969C))
                             .padding(8.dp).align(Alignment.CenterHorizontally)
                     ) {
                         Text(
@@ -160,12 +160,12 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
                         painter = image,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(300.dp).height(150.dp).padding(top = 30.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     )
 
                     Box(
                         modifier = Modifier
-                            .width(300.dp).background(Color(0xFF0F969C))
+                            .fillMaxWidth().background(Color(0xFF0F969C))
                             .padding(8.dp).align(Alignment.CenterHorizontally)
                     ) {
                         Text(
