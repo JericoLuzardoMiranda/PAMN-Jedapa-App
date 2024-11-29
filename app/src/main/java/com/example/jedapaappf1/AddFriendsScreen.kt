@@ -1,11 +1,15 @@
 package com.example.jedapaappf1
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -18,7 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,7 +93,6 @@ fun AddFriendsScreen(navController: NavHostController, userViewModel: UserViewMo
                 0 -> MyCodeTabContent()
                 1 -> ScanCodeTabContent()
             }
-
         }
     }
 
@@ -95,15 +100,33 @@ fun AddFriendsScreen(navController: NavHostController, userViewModel: UserViewMo
 
 @Composable
 fun MyCodeTabContent() {
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "This is My Code Tab",
-            fontSize = 20.sp, color = Color.Black
-        )
+        Box() {
+            Image(
+                painter = painterResource(id = R.drawable.user_icon),
+                contentDescription = "My user icon",
+                modifier = Modifier.width(150.dp).height(150.dp)
+                    .align(Alignment.TopCenter).offset(y = 40.dp)
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.figura),
+                contentDescription = "My code image",
+                modifier = Modifier.fillMaxHeight().width(350.dp).offset(y = 20.dp)
+            )
+
+            Text(
+                text = "MY CODE",
+                color = Color.White, fontFamily = formula1Font,
+                fontSize = 24.sp,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 }
 
