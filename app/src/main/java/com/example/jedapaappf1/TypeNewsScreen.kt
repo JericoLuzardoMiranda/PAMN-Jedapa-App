@@ -37,15 +37,13 @@ import androidx.navigation.NavHostController
 fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val image = painterResource(R.drawable.mockup)
-
+    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
-                .background(Color.White)
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -57,7 +55,7 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
             ////////////////////////////////////////////////////////////////////
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(10.dp),
+                modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 

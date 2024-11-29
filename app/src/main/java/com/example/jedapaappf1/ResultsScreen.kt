@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +29,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
-
+    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -44,7 +46,7 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
 
             //////////////////////////RESULTS TABLE/////////////////////////////
             Column(
-                modifier = Modifier.fillMaxSize().padding(10.dp),
+                modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
                 Row {

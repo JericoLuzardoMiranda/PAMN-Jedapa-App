@@ -2,6 +2,7 @@ package com.example.jedapaappf1
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -172,12 +173,13 @@ fun CircuitoItem(circuito: Circuito) {
     val textRotation = if (isFlipped) 180f else 0f
 
     Box(
-        modifier = Modifier.padding(8.dp).width(300.dp).height(200.dp)
+        modifier = Modifier.padding(8.dp).width(350.dp).height(250.dp)
             .clickable { isFlipped = !isFlipped }
             .graphicsLayer {
                 rotationY = rotation
                 cameraDistance = 8 * density
-            },
+            }
+            .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
         // Lado frontal
@@ -220,7 +222,7 @@ fun CircuitoItem(circuito: Circuito) {
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = evento, fontSize = 14.sp,
+                                text = evento, fontSize = 16.sp,
                                 color = Color.Black, textAlign = TextAlign.Center
                             )
                         }
@@ -231,7 +233,7 @@ fun CircuitoItem(circuito: Circuito) {
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = "$fecha", fontSize = 14.sp,
+                                text = "$fecha", fontSize = 16.sp,
                                 color = Color.Black, textAlign = TextAlign.Center
                             )
                         }
@@ -242,7 +244,7 @@ fun CircuitoItem(circuito: Circuito) {
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = "$hora", fontSize = 14.sp,
+                                text = "$hora", fontSize = 16.sp,
                                 color = Color.Black, textAlign = TextAlign.Center
                             )
                         }

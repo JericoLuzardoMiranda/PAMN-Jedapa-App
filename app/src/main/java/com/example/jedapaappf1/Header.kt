@@ -68,6 +68,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
             modifier = Modifier.width(120.dp).padding(start = 20.dp)
+                .clickable { navController.navigate("home") }
         )
 
         if (!isUserLoggedIn) {
@@ -77,9 +78,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             ) {
                 Button(
                     onClick = { onSignUpClick() },
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .height(38.dp),
+                    modifier = Modifier.padding(5.dp).height(38.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFD3D3D3),
                         contentColor = Color(0xFF808080)
@@ -91,9 +90,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
 
                 Button(
                     onClick = { onLoginClick() },
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .height(38.dp),
+                    modifier = Modifier.padding(5.dp).height(38.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFD7E7F7),
                         contentColor = Color(0xFF0F969C),
@@ -112,8 +109,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                     contentDescription = "User Profile",
                     modifier = Modifier
                         .clickable { isUserMenuExpanded.value = true }
-                        .padding(end = 16.dp)
-                        .size(30.dp)
+                        .padding(end = 16.dp).size(30.dp)
                 )
 
                 // DropdownMenu para usuario logueado
@@ -168,9 +164,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                     contentDescription = "Back Arrow",
                     modifier = Modifier
                         .clickable { navController.popBackStack() }
-                        .padding(end = 8.dp)
-                        .width(24.dp)
-                        .height(24.dp),
+                        .padding(end = 8.dp).width(24.dp).height(24.dp),
                     contentScale = ContentScale.Fit
                 )
             }
