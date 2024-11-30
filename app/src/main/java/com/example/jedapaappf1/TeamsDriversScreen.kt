@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()){
+fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeams:Boolean){
     Box(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         contentAlignment = Alignment.Center
@@ -43,7 +43,13 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
             ////////////////////////////////////////////////////////////////////
 
             ///BODY///
-            TeamsBody(modifier = Modifier)
+            if (isTeams){
+                TeamsBody(modifier = Modifier)
+            }
+            else{
+                DriversBody(modifier = Modifier)
+            }
+
 
         }
     }
@@ -79,9 +85,49 @@ fun TeamsBody(modifier: Modifier){
 
         }
     }
-
-
 }
+
+@Composable
+fun DriversBody(modifier: Modifier){
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Column(
+            modifier = Modifier.fillMaxSize().background(Color.White),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(
+                text = "Drivers", color = Color.Black,
+                modifier = Modifier.padding(vertical = 20.dp),
+                fontSize = 25.sp, fontFamily = formula1Font
+            )
+            AddItem("Max Verstappen", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Sergio Pérez", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Charles Leclerc", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Carlos Sainz", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Lewis Hamilton", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("George Russell", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Fernando Alonso", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Lance Stroll", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Lando Norris", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Oscar Piastri", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Valtteri Bottas", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Zhou", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Esteban Ocon", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Pierre Gasly", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Nico Hulkenberg", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Kevin Magnussen", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Albon", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Colapinto", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Tsunoda", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+            AddItem("Lawson", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+
+        }
+    }
+}
+
 @Composable
 fun AddItem(name:String, image:String, description:String){
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
@@ -119,5 +165,5 @@ fun AddItem(name:String, image:String, description:String){
 @Preview(showBackground = true)
 @Composable
 fun TeamsDriversScreenPreview() {
-    TeamsDriversScreen(navController = NavHostController(LocalContext.current))
+    TeamsDriversScreen(navController = NavHostController(LocalContext.current), isTeams = true)
 }
