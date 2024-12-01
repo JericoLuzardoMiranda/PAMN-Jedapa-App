@@ -26,23 +26,28 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RegisterScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    var usernameError by remember { mutableStateOf<String?>(null) }
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+    var confirmPasswordError by remember { mutableStateOf<String?>(null) }
+
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFE0E0E0))
+        modifier = Modifier.fillMaxSize().background(Color(0xFFE0E0E0))
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(top = 30.dp)
+                modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     .background(Color.White, shape = RoundedCornerShape(25.dp))
                     .border(1.dp, Color.Black, RoundedCornerShape(25.dp)),
                 contentAlignment = Alignment.Center
@@ -57,9 +62,7 @@ fun RegisterScreen(navController: NavHostController, userViewModel: UserViewMode
 
             // Formulario de registro
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 var username by remember { mutableStateOf("") }
@@ -70,44 +73,89 @@ fun RegisterScreen(navController: NavHostController, userViewModel: UserViewMode
                 // Campo para el nombre de usuario
                 TextField(
                     value = username,
-                    onValueChange = { username = it },
+                    onValueChange = { username = it
+                        if (username.isNotEmpty()) usernameError = null
+                    },
                     label = { Text("Nombre de usuario") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, top = 30.dp)
                 )
 
+                ErrorMessage(message = usernameError)
+
                 // Campo para el email
                 TextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = { email = it
+                        if (email.isNotEmpty()) emailError = null
+                    },
                     label = { Text("Correo electrónico") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
                 )
 
+                ErrorMessage(message = emailError)
+
                 // Campo para la contraseña
                 TextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = { password = it
+                        if (password.isNotEmpty()) passwordError = null
+                    },
                     label = { Text("Contraseña") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
                     visualTransformation = PasswordVisualTransformation()
                 )
 
+                ErrorMessage(message = passwordError)
+
                 // Campo para confirmar la contraseña
                 TextField(
                     value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
+                    onValueChange = { confirmPassword = it
+                        if (confirmPassword.isNotEmpty()) confirmPasswordError = null
+                    },
                     label = { Text("Confirmar contraseña") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
                     visualTransformation = PasswordVisualTransformation()
                 )
 
+                ErrorMessage(message = confirmPasswordError)
+
                 // Botón de registrarse
                 Button(
                     onClick = {
-                        if (password == confirmPassword) {
-                            userViewModel.logIn()  // Cambiar el estado de inicio de sesión
+                        var isValid = true
+
+                        if (username.isEmpty()) {
+                            usernameError = "El nombre de usuario es obligatorio"
+                            isValid = false
+                        }
+
+                        if (email.isEmpty()) {
+                            emailError = "El correo electrónico es obligatorio"
+                            isValid = false
+                        } else if (!email.matches(emailRegex)) {
+                            emailError = "Correo electrónico no válido"
+                            isValid = false
+                        }
+
+                        if (password.isEmpty()) {
+                            passwordError = "La contraseña es obligatoria"
+                            isValid = false
+                        } else if (password.length < 6) {
+                            passwordError = "La contraseña debe tener al menos 6 caracteres"
+                            isValid = false
+                        }
+
+                        if (confirmPassword.isEmpty() || confirmPassword != password) {
+                            confirmPasswordError = "Las contraseñas no coinciden"
+                            isValid = false
+                        }
+
+                        if (isValid) {
+                            userViewModel.logIn()
+                            userViewModel.registerUser(username, email, password)
+                            println("Datos registrados: ${userViewModel.username}, ${userViewModel.email}")
                             navController.navigate("register_confirmation") {
-                                // Añadir este popBackStack para limpiar la pila de navegación
                                 popUpTo("home") { inclusive = true }
                             }
                         }
@@ -124,25 +172,34 @@ fun RegisterScreen(navController: NavHostController, userViewModel: UserViewMode
                 // Enlace para iniciar sesión
                 Text(
                     text = "¿Ya eres uno de nosotros?",
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 0.dp)
                 )
 
                 TextButton(
-                    onClick = {
-                        navController.navigate("login")
-                    },
+                    onClick = { navController.navigate("login") },
                     modifier = Modifier.padding(0.dp)
                 ) {
                     Text(
                         text = "Iniciar sesión",
                         color = Color(0xFF196CCE),
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         modifier = Modifier.padding(bottom = 0.dp)
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ErrorMessage(message: String?) {
+    if (message != null) {
+        Text(
+            text = message, color = Color.Red,
+            fontSize = 16.sp, fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
     }
 }

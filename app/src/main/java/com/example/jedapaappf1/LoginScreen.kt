@@ -32,22 +32,15 @@ import androidx.navigation.NavHostController
 @Composable
 fun LoginScreen(navController: NavHostController) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFE0E0E0))
+        modifier = Modifier.fillMaxSize().background(Color(0xFFE0E0E0))
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(top = 30.dp)
+                modifier = Modifier.fillMaxWidth().height(200.dp).padding(top = 30.dp)
                     .background(Color.White, shape = RoundedCornerShape(25.dp))
                     .border(1.dp, Color.Black, RoundedCornerShape(25.dp)),
                 contentAlignment = Alignment.Center
@@ -62,9 +55,7 @@ fun LoginScreen(navController: NavHostController) {
 
             // Formulario de inicio sesión
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 var username by remember { mutableStateOf("") }
