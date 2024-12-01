@@ -30,7 +30,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeams:Boolean){
     Box(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
         Column(
@@ -43,13 +43,8 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
             ////////////////////////////////////////////////////////////////////
 
             ///BODY///
-            if (isTeams){
-                TeamsBody(modifier = Modifier)
-            }
-            else{
-                DriversBody(modifier = Modifier)
-            }
-
+            if (isTeams){ TeamsBody(modifier = Modifier) }
+            else{ DriversBody(modifier = Modifier) }
 
         }
     }
@@ -58,13 +53,14 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
 
 @Composable
 fun TeamsBody(modifier: Modifier){
+    val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White),
+            modifier = Modifier.fillMaxSize().background(Color.White).verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
@@ -89,13 +85,14 @@ fun TeamsBody(modifier: Modifier){
 
 @Composable
 fun DriversBody(modifier: Modifier){
+    val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White),
+            modifier = Modifier.fillMaxSize().background(Color.White).verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
