@@ -18,8 +18,8 @@ fun AppNavigation() {
         composable("signup") { RegisterScreen(navController, userViewModel) }
         composable("register_confirmation") { RegisterConfirmationScreen(navController) }
         composable("login") { LoginScreen(navController) }
-        composable("driversResults"){ResultsScreen(navController, userViewModel)}      //Falta añadir una variable
-        composable("teamsResults"){ResultsScreen(navController, userViewModel)}        //Falta añadir una variable
+        composable("driversResults"){ResultsScreen(navController, userViewModel, isTeamsResults = false)}
+        composable("teamsResults"){ResultsScreen(navController, userViewModel, isTeamsResults = true)}
         composable("teams"){ TeamsDriversScreen(navController, userViewModel, isTeams = true)  }
         composable("drivers"){ TeamsDriversScreen(navController, userViewModel, isTeams = false) }
         composable("calendar"){ CalendarScreen(navController, userViewModel) }
