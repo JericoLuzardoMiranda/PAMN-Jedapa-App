@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -76,10 +77,11 @@ fun DriversResultsBody(modifier: Modifier){
             }
 
             Row (modifier = Modifier.wrapContentSize().fillMaxWidth()) {
-                Text("Position", modifier = Modifier.padding(horizontal = 10.dp).width(70.dp), fontWeight = FontWeight.Bold)
-                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
-                Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(40.dp), fontWeight = FontWeight.Bold)
-                Text("Nationality", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
+                Spacer(modifier.padding(horizontal = 4.dp))
+                Text("Pos", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp), fontWeight = FontWeight.Bold)
+                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(120.dp), fontWeight = FontWeight.Bold)
+                Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(50.dp), fontWeight = FontWeight.Bold)
+                Text("Nationality", modifier = Modifier.padding(horizontal = 10.dp).width(100.dp), fontWeight = FontWeight.Bold)
             }
 
             Column(
@@ -136,10 +138,11 @@ fun TeamsResultsBody(modifier: Modifier){
             }
 
             Row (modifier = Modifier.wrapContentSize().fillMaxWidth()) {
-                Text("Position", modifier = Modifier.padding(horizontal = 10.dp).width(70.dp), fontWeight = FontWeight.Bold)
-                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
-                Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(40.dp), fontWeight = FontWeight.Bold)
-                Text("Drivers", modifier = Modifier.padding(horizontal = 10.dp).width(80.dp), fontWeight = FontWeight.Bold)
+                Spacer(modifier.padding(horizontal = 4.dp))
+                Text("Pos", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp), fontWeight = FontWeight.Bold)
+                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(120.dp), fontWeight = FontWeight.Bold)
+                Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(50.dp), fontWeight = FontWeight.Bold)
+                Text("Drivers", modifier = Modifier.padding(horizontal = 10.dp).width(100.dp), fontWeight = FontWeight.Bold)
             }
 
             Column(
@@ -150,24 +153,24 @@ fun TeamsResultsBody(modifier: Modifier){
                 ///////////////////////INFORMACIÓN DE EJEMPLO/////////////////////////////
                 AddRowTeams(1, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
                 AddRowTeams(2, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(3, "Ferrari", 406, "Carlos Sanz, Charles Leclerc")
+                AddRowTeams(3, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
                 AddRowTeams(4, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(5, "Aston Martón", 342, "Fernando Alonso, Lance Stroll")
+                AddRowTeams(5, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
                 AddRowTeams(6, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
                 AddRowTeams(7, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(8, "Ferrari", 406, "Carlos Sanz, Charles Leclerc")
+                AddRowTeams(8, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
                 AddRowTeams(9, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(10, "Aston Martón", 342, "Fernando Alonso, Lance Stroll")
+                AddRowTeams(10, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
                 AddRowTeams(11, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
                 AddRowTeams(12, "Mercedes", 409, "Lewis Hamilton, George Russell")
                 AddRowTeams(13, "Ferrari", 406, "Carlos Sanz, Charles Leclerc")
                 AddRowTeams(14, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(15, "Aston Martón", 342, "Fernando Alonso, Lance Stroll")
+                AddRowTeams(15, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
                 AddRowTeams(16, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
                 AddRowTeams(17, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(18, "Ferrari", 406, "Carlos Sanz, Charles Leclerc")
+                AddRowTeams(18, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
                 AddRowTeams(19, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(20, "Aston Martón", 342, "Fernando Alonso, Lance Stroll")
+                AddRowTeams(20, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
 
             }
         }
@@ -184,9 +187,9 @@ fun AddRow(position: Int, name:String, points: Int, nationality:String){
         else -> Color(0xFFD7E0F7) // Azul claro
     }
     Row (modifier = Modifier.background(color=rowColor).padding(vertical = 7.dp).wrapContentSize().fillMaxWidth()){
-        Text("$position", modifier = Modifier.padding(horizontal = 10.dp).width(20.dp))
-        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(130.dp))
-        Text("$points", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp))
+        Text("$position", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp))
+        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(120.dp))
+        Text("$points", modifier = Modifier.padding(horizontal = 10.dp).width(50.dp))
         Text(nationality, modifier = Modifier.padding(horizontal = 10.dp).width(100.dp))
     }
 }
