@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -32,12 +35,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+
+// Clase de datos para representar la pregunta
+data class Question(
+    val text: String,
+    val options: List<String>,
+    val correctAnswer: String
+)
 
 @Composable
 fun FormulaLearningScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()){
@@ -103,7 +114,6 @@ fun FormulaLearningScreen(navController: NavHostController, userViewModel: UserV
     }
 
 }
-
 
 
 @Composable
@@ -220,15 +230,109 @@ fun InformationTabContent() {
 
 @Composable
 fun QuizTabContent() {
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
+
+    // Preguntas y respuestas
+    val questions = listOf(
+        Question(
+            text = "What year marked the inaugural Formula 1 World Championship season?",
+            options = listOf("1948", "1950", "1962"),
+            correctAnswer = "1950"
+        ),
+        Question(
+            text = "Which legendary driver emerged in the 1980s?",
+            options = listOf("Michael Schumacher","Niki Lauda","Ayrton Senna"),
+            correctAnswer = "Ayrton Senna"
+        ),
+        Question(
+            text = "What was a significant technological advancement introduced in the 1970s?",
+            options = listOf("Carbon fiber chassis","Hybrid power units","Turbocharging"),
+            correctAnswer = "Turbocharging"
+        ),
+        Question(
+            text = "What is the current maximum number of engines allowd per driver for the entire season?",
+            options = listOf("2","3","4"),
+            correctAnswer = "4"
+        ),
+        Question(
+            text = "Which aerodynamic feature aims to reduce drag on straights?",
+            options = listOf("Front wing","Rear wing","Diffuser"),
+            correctAnswer = "Rear wing"
+        ),
+        Question(
+            text = "What does DRS stand for?",
+            options = listOf("Drag Reduction System","Downforce Reduction System","Driving Reduction System"),
+            correctAnswer = "Drag Reduction System"
+        )
+    )
+
+    // Estado de la pregunta actual
+    var currentQuestionIndex by remember { mutableStateOf(0) }
+    val currentQuestion = questions[currentQuestionIndex]
+
+    // Estado para la respuesta depende de que si acierta o falla
+    var selectedAnswer by remember { mutableStateOf<String?>(null) }
+    var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Se muestra la pregunta
         Text(
-            text = "This is Quiz Tab",
-            fontSize = 20.sp, color = Color.Black
+            text = currentQuestion.text, textAlign = TextAlign.Justify,
+            fontSize = 20.sp, fontFamily = formula1Font,
+            modifier = Modifier.padding(bottom = 20.dp)
         )
+
+        // Se muestra múltiples respuestas
+        currentQuestion.options.forEach { option ->
+            Button(
+                onClick = {
+                    selectedAnswer = option
+                    isAnswerCorrect = (option == currentQuestion.correctAnswer)
+                },
+                colors = if (selectedAnswer == option) {
+                    if (isAnswerCorrect == true) { ButtonDefaults.buttonColors(containerColor = Color.Green) }
+                    else { ButtonDefaults.buttonColors(containerColor = Color.Red) }
+                } else {
+                    ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) { Text(text = option, color = Color.Black,
+                fontSize = 18.sp, fontFamily = formula1Font) }
+        }
+
+        // Botones "Anterior" y "Siguiente"
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--
+                        selectedAnswer = null
+                        isAnswerCorrect = null
+                    }
+                },
+                // Se desactiva el botón si estamos en la primera pregunta
+                enabled = currentQuestionIndex > 0
+            ) { Text(text = "Previous") }
+
+            Button(
+                onClick = {
+                    if (currentQuestionIndex < questions.lastIndex) {
+                        currentQuestionIndex++
+                        selectedAnswer = null
+                        isAnswerCorrect = null
+                    }
+                },
+                // Se desactiva el botón si estamos en la última pregunta
+                enabled = currentQuestionIndex < questions.lastIndex
+            ) { Text(text = "Next") }
+        }
     }
 }
 
