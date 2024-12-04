@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868749618890",
+    "project_id": "f1-app-pwm",
+    "storage_bucket": "f1-app-pwm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868749618890:android:8e618e280f97cdd6170e33",
+        "android_client_info": {
+          "package_name": "com.example.jedapaappf1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868749618890-uabdib50j28afqer3a9bqhjnid51eqm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbKJdqkm4mIe6P99zrFSiAm1c0BKiyHJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868749618890-uabdib50j28afqer3a9bqhjnid51eqm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

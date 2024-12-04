@@ -12,8 +12,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,10 +33,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
+@ExperimentalMaterial3Api
 @Composable
 fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeamsResults:Boolean) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val scrollState = rememberScrollState()
+    val viewModel: ResultsViewModel = viewModel()
+    val driverState by viewModel.driverState.observeAsState()
+    LaunchedEffect(Unit){
+        viewModel.getDrivers()
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -47,7 +59,7 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
 
             ///BODY///
             if (isTeamsResults){ TeamsResultsBody(modifier = Modifier) }
-            else{ DriversResultsBody(modifier = Modifier) }
+            else{ DriversResultsBody(modifier = Modifier, driverState) }
 
 
 
@@ -56,9 +68,11 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
 }
 
 @Composable
-fun DriversResultsBody(modifier: Modifier){
+fun DriversResultsBody(modifier: Modifier, driverState:Result?){
     val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val drivers = remember { mutableStateOf<List<DriverResult>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -88,8 +102,30 @@ fun DriversResultsBody(modifier: Modifier){
                 modifier = Modifier.fillMaxSize().padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
+                //TEST//
+
+                when(driverState){
+                    is Result.DriversResultsSuccess -> {
+                        drivers.value = driverState.items
+                    }
+                    is Result.Error -> {
+                        showErrorDialog.value = true
+                    }
+                    else -> {}
+                }
+
+                var counter = 1
+                val sortedDrivers = drivers.value.sortedByDescending { it.points }
+                for (driver in sortedDrivers){
+                    AddRow(counter, driver.driver, driver.points, driver.nationality)
+                    counter++
+                }
+
+
+                /////////
 
                 ///////////////////////INFORMACIÓN DE EJEMPLO/////////////////////////////
+                /*
                 AddRow(1, "Max Verstappen", 342, "Netherlands")
                 AddRow(2, "Sergio Pérez", 342, "Mexico")
                 AddRow(3, "Fernando Alonso", 342, "Spain")
@@ -110,6 +146,7 @@ fun DriversResultsBody(modifier: Modifier){
                 AddRow(18, "Max Verstappen", 342, "Dutch")
                 AddRow(19, "Max Verstappen", 342, "Dutch")
                 AddRow(20, "Max Verstappen", 342, "Dutch")
+                */
             }
         }
 
@@ -212,5 +249,10 @@ fun AddRowTeams(position: Int, name:String, points: Int, drivers:String){
 @Preview(showBackground = true)
 @Composable
 fun ResultsScreenPreview() {
-    ResultsScreen(navController = NavHostController(LocalContext.current), isTeamsResults = true)
+    val drivers = listOf(
+        DriverResult("1", "Pepe", 123, "Spanish"),
+        DriverResult("2", "Pepe", 123, "Spanish"),
+        DriverResult("3", "Pepe", 123, "Spanish")
+    )
+    DriversResultsBody(modifier = Modifier, driverState = Result.DriversResultsSuccess(drivers))
 }

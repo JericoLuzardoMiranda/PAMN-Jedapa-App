@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
+    //id("com.google.gms.google-services")
 }
 
 android {
@@ -61,7 +63,15 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("com.google.zxing:core:3.3.0")                   // Biblioteca para generar y leer códigos QR
-    implementation("com.journeyapps:zxing-android-embedded:4.1.0")  // Para el escáner de QR en Android
+    implementation("com.journeyapps:zxing-android-embedded:4.1.0")
+    //implementation ("com.google.firebase:firebase-database:20.2.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation ("com.google.android.gms:play-services-basement")
+    //implementation ("com.google.android.gms:play-services:17.0.0")
+    implementation(libs.firebase.firestore)
+    implementation(libs.androidx.runtime.livedata)  // Para el escáner de QR en Android
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
