@@ -1,4 +1,4 @@
-package com.example.jedapaappf1
+package com.example.jedapaappf1.screens.TeamsDrivers
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.jedapaappf1.navigation.MyHeader
+import com.example.jedapaappf1.R
+import com.example.jedapaappf1.UserViewModel
 
 @Composable
 fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeams:Boolean){

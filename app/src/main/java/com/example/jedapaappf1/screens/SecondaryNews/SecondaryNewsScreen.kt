@@ -1,9 +1,8 @@
 // Archivo: SecondaryNewsScreen.kt
-package com.example.jedapaappf1
+package com.example.jedapaappf1.screens.SecondaryNews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +31,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavHostController
+import com.example.jedapaappf1.navigation.MyHeader
+import com.example.jedapaappf1.R
+import com.example.jedapaappf1.UserViewModel
 
 @Composable
 fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {

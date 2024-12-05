@@ -6,9 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
+import com.example.jedapaappf1.navigation.AppNavigation
 import com.example.jedapaappf1.ui.theme.JedapaAppF1Theme
 
 class MainActivity : ComponentActivity() {

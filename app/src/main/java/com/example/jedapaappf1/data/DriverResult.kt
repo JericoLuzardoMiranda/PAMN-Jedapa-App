@@ -1,4 +1,4 @@
-package com.example.jedapaappf1
+package com.example.jedapaappf1.data
 
 data class DriverResult (
     val id: String,

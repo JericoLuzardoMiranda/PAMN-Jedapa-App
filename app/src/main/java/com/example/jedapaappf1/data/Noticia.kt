@@ -1,5 +1,5 @@
 // Archivo: Noticia.kt
-package com.example.jedapaappf1
+package com.example.jedapaappf1.data
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

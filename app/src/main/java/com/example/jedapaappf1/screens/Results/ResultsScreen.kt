@@ -1,4 +1,4 @@
-package com.example.jedapaappf1
+package com.example.jedapaappf1.screens.Results
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,8 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.jedapaappf1.data.DriverResult
+import com.example.jedapaappf1.navigation.MyHeader
+import com.example.jedapaappf1.R
+import com.example.jedapaappf1.data.Result
+import com.example.jedapaappf1.UserViewModel
 
-@ExperimentalMaterial3Api
 @Composable
 fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeamsResults:Boolean) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
@@ -68,7 +71,7 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
 }
 
 @Composable
-fun DriversResultsBody(modifier: Modifier, driverState:Result?){
+fun DriversResultsBody(modifier: Modifier, driverState: Result?){
     val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val drivers = remember { mutableStateOf<List<DriverResult>>(listOf()) }
@@ -102,8 +105,6 @@ fun DriversResultsBody(modifier: Modifier, driverState:Result?){
                 modifier = Modifier.fillMaxSize().padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                //TEST//
-
                 when(driverState){
                     is Result.DriversResultsSuccess -> {
                         drivers.value = driverState.items
@@ -120,33 +121,6 @@ fun DriversResultsBody(modifier: Modifier, driverState:Result?){
                     AddRow(counter, driver.driver, driver.points, driver.nationality)
                     counter++
                 }
-
-
-                /////////
-
-                ///////////////////////INFORMACIÓN DE EJEMPLO/////////////////////////////
-                /*
-                AddRow(1, "Max Verstappen", 342, "Netherlands")
-                AddRow(2, "Sergio Pérez", 342, "Mexico")
-                AddRow(3, "Fernando Alonso", 342, "Spain")
-                AddRow(4, "Lance Stroll", 342, "Canada")
-                AddRow(5, "Carlos Sainz", 342, "Spain")
-                AddRow(6, "Charles Leclerc", 342, "Monaco")
-                AddRow(7, "Max Verstappen", 342, "Dutch")
-                AddRow(8, "Max Verstappen", 342, "Dutch")
-                AddRow(9, "Max Verstappen", 342, "Dutch")
-                AddRow(10,"Max Verstappen", 342, "Dutch")
-                AddRow(11, "Max Verstappen", 342, "Dutch")
-                AddRow(12, "Max Verstappen", 342, "Dutch")
-                AddRow(13, "Max Verstappen", 342, "Dutch")
-                AddRow(14, "Max Verstappen", 342, "Dutch")
-                AddRow(15, "Max Verstappen", 342, "Dutch")
-                AddRow(16, "Max Verstappen", 342, "Dutch")
-                AddRow(17, "Max Verstappen", 342, "Dutch")
-                AddRow(18, "Max Verstappen", 342, "Dutch")
-                AddRow(19, "Max Verstappen", 342, "Dutch")
-                AddRow(20, "Max Verstappen", 342, "Dutch")
-                */
             }
         }
 

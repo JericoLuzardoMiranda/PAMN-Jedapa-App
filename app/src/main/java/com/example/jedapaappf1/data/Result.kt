@@ -1,4 +1,4 @@
-package com.example.jedapaappf1
+package com.example.jedapaappf1.data
 
 sealed class Result {
     data class DriversResultsSuccess(val items: List<DriverResult>): Result()
