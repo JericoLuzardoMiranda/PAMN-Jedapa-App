@@ -12,6 +12,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,9 +32,22 @@ import androidx.navigation.NavHostController
 import com.example.jedapaappf1.navigation.MyHeader
 import com.example.jedapaappf1.R
 import com.example.jedapaappf1.UserViewModel
+import com.example.jedapaappf1.data.Driver
+import com.example.jedapaappf1.data.DriverResult
+import com.example.jedapaappf1.data.Result
+import com.example.jedapaappf1.data.Team
+import com.example.jedapaappf1.data.TeamResult
+import com.example.jedapaappf1.screens.Results.AddRow
 
 @Composable
 fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeams:Boolean){
+    val viewModel: TeamsDriversViewModel = viewModel()
+    val driverState by viewModel.driverState.observeAsState()
+    val teamState by viewModel.teamState.observeAsState()
+    LaunchedEffect(Unit){
+        viewModel.getDrivers()
+        viewModel.getTeams()
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -45,9 +61,10 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
             MyHeader(navController = navController, currentScreen = "Teams & Drivers", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
-            ///BODY///
-            if (isTeams){ TeamsBody(modifier = Modifier) }
-            else{ DriversBody(modifier = Modifier) }
+            /////////////////////////////BODY//////////////////////////////////
+            if (isTeams){ TeamsBody(modifier = Modifier, teamState) }
+            else{ DriversBody(modifier = Modifier, driverState) }
+            //////////////////////////////////////////////////////////////////
 
         }
     }
@@ -55,9 +72,11 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
 }
 
 @Composable
-fun TeamsBody(modifier: Modifier){
+fun TeamsBody(modifier: Modifier, teamState: Result?){
     val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val teams = remember { mutableStateOf<List<Team>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -71,6 +90,22 @@ fun TeamsBody(modifier: Modifier){
                 modifier = Modifier.padding(vertical = 20.dp),
                 fontSize = 25.sp, fontFamily = formula1Font
             )
+
+            when(teamState){
+                is Result.TeamsSuccess -> {
+                    teams.value = teamState.items
+                }
+                is Result.Error -> {
+                    showErrorDialog.value = true
+                }
+                else -> {}
+            }
+
+            for (team in teams.value){
+                AddItem(team.name, "mockup", team.description)
+            }
+
+            /*
             AddItem("RedBull", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Mercedes", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Ferrari", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
@@ -81,15 +116,17 @@ fun TeamsBody(modifier: Modifier){
             AddItem("Williams", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Sauber", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Alpine", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-
+            */
         }
     }
 }
 
 @Composable
-fun DriversBody(modifier: Modifier){
+fun DriversBody(modifier: Modifier, driverState: Result?){
     val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val drivers = remember { mutableStateOf<List<Driver>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -103,6 +140,22 @@ fun DriversBody(modifier: Modifier){
                 modifier = Modifier.padding(vertical = 20.dp),
                 fontSize = 25.sp, fontFamily = formula1Font
             )
+
+            when(driverState){
+                is Result.DriversSuccess -> {
+                    drivers.value = driverState.items
+                }
+                is Result.Error -> {
+                    showErrorDialog.value = true
+                }
+                else -> {}
+            }
+
+            for (driver in drivers.value){
+                AddItem(driver.name, "mockup", driver.description)
+            }
+
+            /*
             AddItem("Max Verstappen", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Sergio Pérez", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Charles Leclerc", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
@@ -123,6 +176,7 @@ fun DriversBody(modifier: Modifier){
             AddItem("Colapinto", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Tsunoda", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
             AddItem("Lawson", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
+             */
 
         }
     }
