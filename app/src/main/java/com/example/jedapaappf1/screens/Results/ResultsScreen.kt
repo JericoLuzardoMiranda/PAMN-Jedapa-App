@@ -36,6 +36,7 @@ import com.example.jedapaappf1.navigation.MyHeader
 import com.example.jedapaappf1.R
 import com.example.jedapaappf1.data.Result
 import com.example.jedapaappf1.UserViewModel
+import com.example.jedapaappf1.data.TeamResult
 
 @Composable
 fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeamsResults:Boolean) {
@@ -43,8 +44,10 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
     val scrollState = rememberScrollState()
     val viewModel: ResultsViewModel = viewModel()
     val driverState by viewModel.driverState.observeAsState()
+    val teamState by viewModel.teamState.observeAsState()
     LaunchedEffect(Unit){
         viewModel.getDrivers()
+        viewModel.getTeams()
     }
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -60,11 +63,10 @@ fun ResultsScreen(navController: NavHostController, userViewModel: UserViewModel
             MyHeader(navController = navController, currentScreen = "Results", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
 
-            ///BODY///
-            if (isTeamsResults){ TeamsResultsBody(modifier = Modifier) }
+            /////////////////////////////BODY//////////////////////////////////
+            if (isTeamsResults){ TeamsResultsBody(modifier = Modifier, teamState) }
             else{ DriversResultsBody(modifier = Modifier, driverState) }
-
-
+            //////////////////////////////////////////////////////////////////
 
         }
     }
@@ -96,9 +98,9 @@ fun DriversResultsBody(modifier: Modifier, driverState: Result?){
             Row (modifier = Modifier.wrapContentSize().fillMaxWidth()) {
                 Spacer(modifier.padding(horizontal = 4.dp))
                 Text("Pos", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp), fontWeight = FontWeight.Bold)
-                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(120.dp), fontWeight = FontWeight.Bold)
+                Text("Name", modifier = Modifier.padding(horizontal = 10.dp).width(110.dp), fontWeight = FontWeight.Bold)
                 Text("Points", modifier = Modifier.padding(horizontal = 10.dp).width(50.dp), fontWeight = FontWeight.Bold)
-                Text("Nationality", modifier = Modifier.padding(horizontal = 10.dp).width(100.dp), fontWeight = FontWeight.Bold)
+                Text("Nationality", modifier = Modifier.padding(horizontal = 10.dp).width(110.dp), fontWeight = FontWeight.Bold)
             }
 
             Column(
@@ -128,9 +130,11 @@ fun DriversResultsBody(modifier: Modifier, driverState: Result?){
 }
 
 @Composable
-fun TeamsResultsBody(modifier: Modifier){
+fun TeamsResultsBody(modifier: Modifier, teamState: Result?){
     val scrollState = rememberScrollState()
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val teams = remember { mutableStateOf<List<TeamResult>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -160,29 +164,22 @@ fun TeamsResultsBody(modifier: Modifier){
                 modifier = Modifier.fillMaxSize().padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
+                when(teamState){
+                    is Result.TeamsResultsSuccess -> {
+                        teams.value = teamState.items
+                    }
+                    is Result.Error -> {
+                        showErrorDialog.value = true
+                    }
+                    else -> {}
+                }
 
-                ///////////////////////INFORMACIÓN DE EJEMPLO/////////////////////////////
-                AddRowTeams(1, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
-                AddRowTeams(2, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(3, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
-                AddRowTeams(4, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(5, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
-                AddRowTeams(6, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
-                AddRowTeams(7, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(8, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
-                AddRowTeams(9, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(10, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
-                AddRowTeams(11, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
-                AddRowTeams(12, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(13, "Ferrari", 406, "Carlos Sanz, Charles Leclerc")
-                AddRowTeams(14, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(15, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
-                AddRowTeams(16, "Red Bull", 800, "Max Verstappen, Sergio Pérez")
-                AddRowTeams(17, "Mercedes", 409, "Lewis Hamilton, George Russell")
-                AddRowTeams(18, "Ferrari", 406, "Carlos Sainz, Charles Leclerc")
-                AddRowTeams(19, "McLaren", 342, "Lando Norris, Oscar Piastri")
-                AddRowTeams(20, "Aston Martin", 342, "Fernando Alonso, Lance Stroll")
-
+                var counter = 1
+                val sortedTeams = teams.value.sortedByDescending { it.points }
+                for (team in sortedTeams){
+                    AddRow(counter, team.name, team.points, team.drivers)
+                    counter++
+                }
             }
         }
 
@@ -191,7 +188,7 @@ fun TeamsResultsBody(modifier: Modifier){
 
 
 @Composable
-fun AddRow(position: Int, name:String, points: Int, nationality:String){
+fun AddRow(position: Int, name:String, points: Int, nationalityOrDrivers:String){
     val rowColor = when {
         position == 1 -> Color(0xFFF2D45C) // Amarillo
         position % 2 == 0 -> Color(0x7AE0E0E0) // Gris claro
@@ -199,24 +196,9 @@ fun AddRow(position: Int, name:String, points: Int, nationality:String){
     }
     Row (modifier = Modifier.background(color=rowColor).padding(vertical = 7.dp).wrapContentSize().fillMaxWidth()){
         Text("$position", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp))
-        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(120.dp))
+        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(110.dp))
         Text("$points", modifier = Modifier.padding(horizontal = 10.dp).width(50.dp))
-        Text(nationality, modifier = Modifier.padding(horizontal = 10.dp).width(100.dp))
-    }
-}
-
-@Composable
-fun AddRowTeams(position: Int, name:String, points: Int, drivers:String){
-    val rowColor = when {
-        position == 1 -> Color(0xFFF2D45C) // Amarillo
-        position % 2 == 0 -> Color(0x7AE0E0E0) // Gris claro
-        else -> Color(0xFFD7E0F7) // Azul claro
-    }
-    Row (modifier = Modifier.background(color=rowColor).padding(vertical = 7.dp).wrapContentSize().fillMaxWidth()){
-        Text("$position", modifier = Modifier.padding(horizontal = 10.dp).width(20.dp))
-        Text(name, modifier = Modifier.padding(horizontal = 10.dp).width(130.dp))
-        Text("$points", modifier = Modifier.padding(horizontal = 10.dp).width(30.dp))
-        Text(drivers, modifier = Modifier.padding(horizontal = 10.dp).width(100.dp))
+        Text(nationalityOrDrivers, modifier = Modifier.padding(horizontal = 10.dp).width(110.dp))
     }
 }
 
