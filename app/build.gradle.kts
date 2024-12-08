@@ -68,6 +68,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation ("com.google.android.gms:play-services-basement")
     //implementation ("com.google.android.gms:play-services:17.0.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.1.0")
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.runtime.livedata)
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") // Scanner

@@ -27,11 +27,6 @@ import com.example.jedapaappf1.UserViewModel
 
 @Composable
 fun RegisterScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
-    var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
     var usernameError by remember { mutableStateOf<String?>(null) }
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
@@ -153,11 +148,15 @@ fun RegisterScreen(navController: NavHostController, userViewModel: UserViewMode
                         }
 
                         if (isValid) {
-                            userViewModel.logIn()
-                            userViewModel.registerUser(username, email, password)
-                            println("Datos registrados: ${userViewModel.username}, ${userViewModel.email}")
-                            navController.navigate("register_confirmation") {
-                                popUpTo("home") { inclusive = true }
+                            userViewModel.registerUser(username, email, password) { success ->
+                                if (success) {
+                                    println("Datos registrados exitosamente")
+                                    navController.navigate("register_confirmation") {
+                                        popUpTo("home") { inclusive = true }
+                                    }
+                                } else {
+                                    println("Error al registrar el usuario")
+                                }
                             }
                         }
                     },

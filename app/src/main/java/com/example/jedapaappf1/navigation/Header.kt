@@ -41,7 +41,6 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
 
     val onSignUpClick = { navController.navigate("signup") }
     val onLoginClick = { navController.navigate("login") }
-    val onUserProfileClick = { navController.navigate("user_profile") }
     val onLogOutClick = {
         userViewModel.logOut()
         navController.navigate("home")  // Redirigir al Home después de cerrar sesión
@@ -106,8 +105,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                 Image(
                     painter = painterResource(R.drawable.user_icon),
                     contentDescription = "User Profile",
-                    modifier = Modifier
-                        .clickable { isUserMenuExpanded.value = true }
+                    modifier = Modifier.clickable { isUserMenuExpanded.value = true }
                         .padding(end = 16.dp).size(30.dp)
                 )
 
@@ -138,9 +136,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
 
     // Segunda fila
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFF294D61))
+        modifier = Modifier.fillMaxWidth().background(Color(0xFF294D61))
             .padding(vertical = 10.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -149,7 +145,6 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-
             if (showBackArrow) {
                 Image(
                     painter = painterResource(R.drawable.back_arrow),
@@ -180,7 +175,6 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             }
         )
     }
-
 
     // Mostrar el menú desplegable si está expandido
     if (isMenuExpanded.value) {
@@ -221,11 +215,7 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
             )
 
             if (isResultsExpanded.value) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp)
-                ) {
+                Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp)) {
                     Text("Teams", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF), modifier = Modifier.clickable { navController.navigate("teamsResults") })
                     Text("Drivers", fontSize = 14.sp, fontFamily = formula1Font, color = Color(0xFFDFDFDF), modifier = Modifier.clickable { navController.navigate("driversResults") })
                 }

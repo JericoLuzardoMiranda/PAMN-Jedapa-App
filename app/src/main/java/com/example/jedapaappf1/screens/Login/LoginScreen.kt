@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -23,15 +24,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.jedapaappf1.R
+import com.example.jedapaappf1.UserViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xFFE0E0E0))
     ) {
@@ -59,15 +63,16 @@ fun LoginScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var username by remember { mutableStateOf("") }
+                var email by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
 
-                // Campo para el nombre de usuario
+                // Campo para el correo electrónico
                 TextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text("Nombre de usuario") },
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, top = 30.dp)
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Correo electrónico") },
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, top = 30.dp),
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email)
                 )
 
                 // Campo para la contraseña
@@ -82,7 +87,10 @@ fun LoginScreen(navController: NavHostController) {
                 // Botón de iniciar sesión
                 Button(
                     onClick = {
-                        navController.navigate("home")
+                        userViewModel.logIn(email, password) { success ->
+                            if (success) { navController.navigate("home") }
+                            else { println("Error al iniciar sesión") }
+                        }
                     },
                     modifier = Modifier.width(200.dp).padding(bottom = 20.dp, top = 20.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -92,6 +100,7 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     Text("Iniciar sesión")
                 }
+
 
                 // Enlace para registrarse
                 Text(
@@ -109,9 +118,7 @@ fun LoginScreen(navController: NavHostController) {
                 )
 
                 TextButton(
-                    onClick = {
-                        navController.navigate("signup")
-                    },
+                    onClick = { navController.navigate("signup") },
                     modifier = Modifier.padding(0.dp)
                 ) {
                     Text(
