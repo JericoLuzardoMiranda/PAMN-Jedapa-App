@@ -33,11 +33,8 @@ import com.example.jedapaappf1.navigation.MyHeader
 import com.example.jedapaappf1.R
 import com.example.jedapaappf1.UserViewModel
 import com.example.jedapaappf1.data.Driver
-import com.example.jedapaappf1.data.DriverResult
 import com.example.jedapaappf1.data.Result
 import com.example.jedapaappf1.data.Team
-import com.example.jedapaappf1.data.TeamResult
-import com.example.jedapaappf1.screens.Results.AddRow
 
 @Composable
 fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), isTeams:Boolean){
@@ -102,21 +99,8 @@ fun TeamsBody(modifier: Modifier, teamState: Result?){
             }
 
             for (team in teams.value){
-                AddItem(team.name, "mockup", team.description)
+                AddItem(team.name, team.imageRef, team.description)
             }
-
-            /*
-            AddItem("RedBull", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Mercedes", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Ferrari", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Mclaren", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Aston Martin", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Haas", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("RB", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Williams", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Sauber", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Alpine", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            */
         }
     }
 }
@@ -152,32 +136,8 @@ fun DriversBody(modifier: Modifier, driverState: Result?){
             }
 
             for (driver in drivers.value){
-                AddItem(driver.name, "mockup", driver.description)
+                AddItem(driver.name, driver.imageRef, driver.description)
             }
-
-            /*
-            AddItem("Max Verstappen", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Sergio Pérez", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Charles Leclerc", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Carlos Sainz", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Lewis Hamilton", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("George Russell", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Fernando Alonso", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Lance Stroll", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Lando Norris", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Oscar Piastri", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Valtteri Bottas", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Zhou", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Esteban Ocon", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Pierre Gasly", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Nico Hulkenberg", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Kevin Magnussen", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Albon", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Colapinto", "mockup","LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Tsunoda", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-            AddItem("Lawson", "mockup", "LoremIpsum akdfbkdasfbkasdfb akdfbksadfbhkajsdhbf akdfbhsadkfbsakdf akdfbsdkfbasdf kabdkf asdfkljbas fnkadjbf kadjbf")
-             */
-
         }
     }
 }
@@ -195,11 +155,23 @@ fun AddItem(name:String, image:String, description:String){
             .clickable { isItemExpanded.value = true },
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Image(
-            painter = painterResource(R.drawable.mockup), ///CAMBIAR A LA IMAGEN DADA POR PARAMETRO
-            contentDescription = "item",
-            modifier = Modifier
-        )
+        val context = LocalContext.current
+        val imageResId = context.resources.getIdentifier(image, "drawable", context.packageName)
+        if (imageResId != 0) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = "item",
+                modifier = Modifier
+            )
+        }
+        else {
+            // Mockup en caso de no encontrar la imagen
+            Image(
+                painter = painterResource(id = R.drawable.mockup),
+                contentDescription = "item no encontrado",
+                modifier = Modifier
+            )
+        }
         Text(
             text=name,
             fontSize = 15.sp, fontFamily = formula1Font,

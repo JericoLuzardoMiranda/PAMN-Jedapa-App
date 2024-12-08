@@ -17,7 +17,7 @@ class FirebaseTeamsDriversRepository : TeamsDriversRepository {
                     val id = doc.id
                     val name = doc.getString("name") ?: "Unknown"
                     val description = doc.getString("description") ?: "Unknown"
-                    val imageRef = doc.getString("image") ?: "Unknown"
+                    val imageRef = doc.getString("imageKotlin") ?: "Unknown"
                     try {
                         Driver(
                             id = id,
@@ -42,7 +42,7 @@ class FirebaseTeamsDriversRepository : TeamsDriversRepository {
                     val id = doc.id
                     val name = doc.getString("name") ?: "Unknown"
                     val description = doc.getString("description") ?: "Unknown"
-                    val imageRef = doc.getString("image") ?: "Unknown"
+                    val imageRef = doc.getString("imageKotlin") ?: "Unknown"
                     try {
                         Team(
                             id = id,
