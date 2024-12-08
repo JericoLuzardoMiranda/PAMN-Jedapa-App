@@ -21,12 +21,10 @@ class UserViewModel : ViewModel() {
     // Almacenar los datos del usuario
     var username by mutableStateOf<String?>(null)
     var email by mutableStateOf<String?>(null)
-    var password by mutableStateOf<String?>(null)
 
     // Función para iniciar sesión
     fun logIn(email: String, password: String, onComplete: (Boolean) -> Unit) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _isUserLoggedIn.value = true
                     val user = firebaseAuth.currentUser
@@ -34,6 +32,7 @@ class UserViewModel : ViewModel() {
                     this.email = user?.email
                     onComplete(true)
                 } else {
+                    _isUserLoggedIn.value = false
                     onComplete(false)
                 }
             }
@@ -47,19 +46,15 @@ class UserViewModel : ViewModel() {
 
     // Función para registrar usuario
     fun registerUser(username: String, email: String, password: String, onComplete: (Boolean) -> Unit) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
-                    user?.updateProfile(
-                        UserProfileChangeRequest.Builder().setDisplayName(username).build())
+                    user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
                     _isUserLoggedIn.value = true
                     this.username = username
                     this.email = email
                     onComplete(true)
-                } else {
-                    onComplete(false)
-                }
+                } else { onComplete(false) }
             }
     }
 }
