@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -75,7 +76,10 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                 // Campo para el correo electrónico
                 TextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = {
+                        email = it
+                        if (email.isNotEmpty()) emailError = null
+                    },
                     label = { Text("Correo electrónico") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, top = 30.dp),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email)
@@ -86,7 +90,10 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                 // Campo para la contraseña
                 TextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = {
+                        password = it
+                        if (password.isNotEmpty()) passwordError = null
+                    },
                     label = { Text("Contraseña") },
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
                     visualTransformation = PasswordVisualTransformation()
@@ -99,25 +106,22 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                     onClick = {
                         var isValid = true
                         if (email.isEmpty()) {
-                            emailError = "El correo electrónico es obligatorio"
+                            emailError = "Please, enter your email address."
                             isValid = false
                         } else if (!email.matches(emailRegex)) {
-                            emailError = "Correo electrónico no válido"
+                            emailError = "Invalid email."
                             isValid = false
                         }
 
                         if (password.isEmpty()) {
-                            passwordError = "La contraseña es obligatoria"
-                            isValid = false
-                        } else if (password.length < 6) {
-                            passwordError = "La contraseña debe tener al menos 6 caracteres"
+                            passwordError = "Password is required."
                             isValid = false
                         }
 
                         if (isValid) {
                             userViewModel.logIn(email, password) { success ->
                                 if (success) { navController.navigate("home") }
-                                else { println("Correo o contraseña incorrectos") }
+                                else { passwordError = "The email or password is incorrect. Please, try again." }
                             }
                         }
                     },
@@ -127,20 +131,20 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Iniciar sesión")
+                    Text("Login")
                 }
 
 
                 // Enlace para registrarse
                 Text(
-                    text = "¿No tienes cuenta?",
+                    text = "Don't have an account?",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 0.dp)
                 )
 
                 Text(
-                    text = "Descubre lo que estás perdiendo",
+                    text = "Find out what you're missing",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 0.dp)
@@ -151,7 +155,7 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                     modifier = Modifier.padding(0.dp)
                 ) {
                     Text(
-                        text = "Regístrate",
+                        text = "Sign up",
                         color = Color(0xFF196CCE),
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 0.dp)
@@ -165,11 +169,20 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
 @Composable
 fun LoginErrorMessage(message: String?) {
     if (message != null) {
-        Text(
-            text = message, color = Color.Red,
-            fontSize = 16.sp, fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 4.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.error_icon),
+                contentDescription = "Error", tint = Color.Red,
+                modifier = Modifier.size(20.dp).padding(end = 8.dp)
+            )
+            Text(
+                text = message, color = Color.Red,
+                fontSize = 14.sp, fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }
 

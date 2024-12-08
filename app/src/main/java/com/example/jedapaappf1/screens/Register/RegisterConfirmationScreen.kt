@@ -60,19 +60,19 @@ fun RegisterConfirmationScreen(navController: NavHostController, userViewModel: 
                     modifier = Modifier.size(250.dp).padding(top = 50.dp, bottom = 25.dp)
                 )
                 Text(
-                    text = "Registro exitoso",
+                    text = "Registration successful!",
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
                 Text(
-                    text = "Tu cuenta fue creada exitosamente.",
+                    text = "Your account was created successfully.",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.padding(bottom = 0.dp)
                 )
                 Text(
-                    text = "Ahora puedes iniciar sesión.",
+                    text = "You can now log in.",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.padding(bottom = 0.dp)
@@ -91,7 +91,7 @@ fun RegisterConfirmationScreen(navController: NavHostController, userViewModel: 
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Continuar")
+                    Text("Continue")
                 }
 
             }
