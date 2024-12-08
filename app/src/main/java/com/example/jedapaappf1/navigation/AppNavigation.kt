@@ -29,7 +29,7 @@ fun AppNavigation() {
         composable("home") { HomeScreen(navController, userViewModel) }
         composable("signup") { RegisterScreen(navController, userViewModel) }
         composable("register_confirmation") { RegisterConfirmationScreen(navController) }
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginScreen(navController, userViewModel) }
         composable("driversResults"){ ResultsScreen(navController, userViewModel, isTeamsResults = false) }
         composable("teamsResults"){ ResultsScreen(navController, userViewModel, isTeamsResults = true) }
         composable("teams"){ TeamsDriversScreen(navController, userViewModel, isTeams = true)  }

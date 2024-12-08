@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -36,6 +37,11 @@ import com.example.jedapaappf1.UserViewModel
 
 @Composable
 fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xFFE0E0E0))
     ) {
@@ -75,6 +81,8 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email)
                 )
 
+                LoginErrorMessage(message = emailError)
+
                 // Campo para la contraseña
                 TextField(
                     value = password,
@@ -84,12 +92,33 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
                     visualTransformation = PasswordVisualTransformation()
                 )
 
+                LoginErrorMessage(message = passwordError)
+
                 // Botón de iniciar sesión
                 Button(
                     onClick = {
-                        userViewModel.logIn(email, password) { success ->
-                            if (success) { navController.navigate("home") }
-                            else { println("Error al iniciar sesión") }
+                        var isValid = true
+                        if (email.isEmpty()) {
+                            emailError = "El correo electrónico es obligatorio"
+                            isValid = false
+                        } else if (!email.matches(emailRegex)) {
+                            emailError = "Correo electrónico no válido"
+                            isValid = false
+                        }
+
+                        if (password.isEmpty()) {
+                            passwordError = "La contraseña es obligatoria"
+                            isValid = false
+                        } else if (password.length < 6) {
+                            passwordError = "La contraseña debe tener al menos 6 caracteres"
+                            isValid = false
+                        }
+
+                        if (isValid) {
+                            userViewModel.logIn(email, password) { success ->
+                                if (success) { navController.navigate("home") }
+                                else { println("Correo o contraseña incorrectos") }
+                            }
                         }
                     },
                     modifier = Modifier.width(200.dp).padding(bottom = 20.dp, top = 20.dp),
@@ -133,6 +162,16 @@ fun LoginScreen(navController: NavHostController, userViewModel: UserViewModel =
     }
 }
 
+@Composable
+fun LoginErrorMessage(message: String?) {
+    if (message != null) {
+        Text(
+            text = message, color = Color.Red,
+            fontSize = 16.sp, fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+    }
+}
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
