@@ -117,13 +117,6 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                     onDismissRequest = { isUserMenuExpanded.value = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Profile") },
-                        onClick = {
-                            isUserMenuExpanded.value = false
-                            onUserProfileClick()
-                        }
-                    )
-                    DropdownMenuItem(
                         text = { Text("Add friends") },
                         onClick = {
                             isUserMenuExpanded.value = false
