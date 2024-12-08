@@ -85,7 +85,6 @@ fun TeamsBody(modifier: Modifier, teamState: Result?){
                 modifier = Modifier.padding(vertical = 20.dp),
                 fontSize = 25.sp, fontFamily = formula1Font
             )
-
             when(teamState){
                 is Result.TeamsSuccess -> {
                     teams.value = teamState.items
@@ -122,7 +121,6 @@ fun DriversBody(modifier: Modifier, driverState: Result?){
                 modifier = Modifier.padding(vertical = 20.dp),
                 fontSize = 25.sp, fontFamily = formula1Font
             )
-
             when(driverState){
                 is Result.DriversSuccess -> {
                     drivers.value = driverState.items
