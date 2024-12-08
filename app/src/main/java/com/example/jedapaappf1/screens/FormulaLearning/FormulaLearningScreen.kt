@@ -6,16 +6,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -24,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -233,7 +238,6 @@ fun InformationTabContent() {
 fun QuizTabContent() {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
 
-    // Preguntas y respuestas
     val questions = listOf(
         Question(
             text = "What year marked the inaugural Formula 1 World Championship season?",
@@ -242,110 +246,208 @@ fun QuizTabContent() {
         ),
         Question(
             text = "Which legendary driver emerged in the 1980s?",
-            options = listOf("Michael Schumacher","Niki Lauda","Ayrton Senna"),
+            options = listOf("Michael Schumacher", "Niki Lauda", "Ayrton Senna"),
             correctAnswer = "Ayrton Senna"
         ),
         Question(
             text = "What was a significant technological advancement introduced in the 1970s?",
-            options = listOf("Carbon fiber chassis","Hybrid power units","Turbocharging"),
+            options = listOf("Carbon fiber chassis", "Hybrid power units", "Turbocharging"),
             correctAnswer = "Turbocharging"
         ),
         Question(
             text = "What is the current maximum number of engines allowed per driver for the entire season?",
-            options = listOf("2","3","4"),
+            options = listOf("2", "3", "4"),
             correctAnswer = "4"
         ),
         Question(
             text = "Which aerodynamic feature aims to reduce drag on straights?",
-            options = listOf("Front wing","Rear wing","Diffuser"),
+            options = listOf("Front wing", "Rear wing", "Diffuser"),
             correctAnswer = "Rear wing"
         ),
         Question(
             text = "What does DRS stand for?",
-            options = listOf("Drag Reduction System","Downforce Reduction System","Driving Reduction System"),
+            options = listOf("Drag Reduction System", "Downforce Reduction System", "Driving Reduction System"),
             correctAnswer = "Drag Reduction System"
         )
     )
 
-    // Estado de la pregunta actual
     var currentQuestionIndex by remember { mutableStateOf(0) }
-    val currentQuestion = questions[currentQuestionIndex]
-
-    // Estado de la respuesta
-    val answersState = remember { mutableStateOf(List(questions.size) { Pair<String?, Boolean?>(null, null) } ) }
-
+    val answersState = remember { mutableStateOf(List(questions.size) { Pair<String?, Boolean?>(null, null) }) }
     val selectedAnswer = answersState.value[currentQuestionIndex].first
     val isAnswerCorrect = answersState.value[currentQuestionIndex].second
 
+    var isQuizFinished by remember { mutableStateOf(false) }
+    val friends = remember { mutableStateListOf(
+        Triple("David", 1, 90),
+        Triple("Elena", 2, 64),
+        Triple("Ana", 3, 48),
+        Triple("Carlos", 4, 40),
+        Triple("Fernando", 5, 37)
+    ) }
+
     Box(
         modifier = Modifier.fillMaxSize().background(brush = Brush.verticalGradient(
-                colors = listOf(Color.Blue, Color.Red),
-                startY = 0f, endY = Float.POSITIVE_INFINITY
-            ))
+            colors = listOf(Color.Blue, Color.Red),
+            startY = 0f, endY = Float.POSITIVE_INFINITY
+        ))
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Se muestra la pregunta
-            Text(
-                text = currentQuestion.text, textAlign = TextAlign.Justify,
-                fontSize = 20.sp, fontFamily = formula1Font,
-                color = Color.White,
-                modifier = Modifier.padding(bottom = 20.dp)
-            )
+        if (isQuizFinished) {
+            val correctAnswers = answersState.value.count { it.second == true }
+            val totalQuestions = questions.size
+            val userScore = (correctAnswers.toFloat() / totalQuestions * 100).toInt()
+            val userName = "You"
 
-            // Se muestra las opciones de respuestas
-            currentQuestion.options.forEach { option ->
-                Button(
-                    onClick = {
-                        // Se permite seleccionar solamente una respuesta si no está seleccionada
-                        if (selectedAnswer == null) {
-                            val correct = option == currentQuestion.correctAnswer
-                            // Se guarda la respuesta asignada
-                            answersState.value = answersState.value.toMutableList().apply {
-                                this[currentQuestionIndex] = Pair(option, correct)
-                            }
-                        }
-                    },
-                    colors = if (selectedAnswer == option) {
-                        if (isAnswerCorrect == true) { ButtonDefaults.buttonColors(containerColor = Color.Green) }
-                        else { ButtonDefaults.buttonColors(containerColor = Color.Red) }
-                    } else { ButtonDefaults.buttonColors(containerColor = Color.LightGray) },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                        .clip(RoundedCornerShape(8.dp)).shadow(5.dp)
-                ) {
-                    Text(
-                        text = option, color = Color.Black,
-                        fontSize = 18.sp, fontFamily = formula1Font
-                    )
+            // Se actualiza la lista de clasificación
+            LaunchedEffect(Unit) {
+                val updatedFriends = friends.toMutableList()
+                updatedFriends.add(Triple(userName, 0, userScore))
+                updatedFriends.sortByDescending { it.third }
+                updatedFriends.forEachIndexed { index, entry ->
+                    updatedFriends[index] = entry.copy(second = index + 1)
                 }
+                friends.clear()
+                friends.addAll(updatedFriends)
             }
 
-            // Botones "Anterior" y "Siguiente"
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                modifier = Modifier.fillMaxSize().padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    onClick = { if (currentQuestionIndex > 0) { currentQuestionIndex-- } },
-                    // Se desactiva el botón si estamos en la primera pregunta
-                    enabled = currentQuestionIndex > 0,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
-                ) { Text(text = "Previous", color = Color.White) }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    friends.getOrNull(1)?.let { secondPlace ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.height(150.dp)
+                        ) {
+                            Text("2nd", fontSize = 16.sp, color = Color.White)
+                            Box(
+                                modifier = Modifier.size(width = 50.dp, height = 100.dp)
+                                    .background(Color.Gray, RoundedCornerShape(8.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text(secondPlace.first, fontSize = 14.sp, color = Color.White) }
+                        }
+                    }
+                    friends.firstOrNull()?.let { firstPlace ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.height(200.dp)
+                        ) {
+                            Text("1st", fontSize = 16.sp, color = Color.Yellow)
+                            Box(
+                                modifier = Modifier.size(width = 60.dp, height = 150.dp)
+                                    .background(Color.Gray, RoundedCornerShape(8.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text(firstPlace.first, fontSize = 14.sp, color = Color.White) }
+                        }
+                    }
+                    friends.getOrNull(2)?.let { thirdPlace ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.height(120.dp)
+                        ) {
+                            Text("3rd", fontSize = 16.sp, color = Color.White)
+                            Box(
+                                modifier = Modifier.size(width = 50.dp, height = 70.dp)
+                                    .background(Color.Gray, RoundedCornerShape(8.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text(thirdPlace.first, fontSize = 14.sp, color = Color.White) }
+                        }
+                    }
+                }
 
-                Button(
-                    onClick = { if (currentQuestionIndex < questions.lastIndex) { currentQuestionIndex++ } },
-                    // Se desactiva el botón si estamos en la última pregunta
-                    enabled = currentQuestionIndex < questions.lastIndex,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
-                ) { Text(text = "Next", color = Color.White) }
+                // Ranking
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Ranking", fontSize = 20.sp, fontFamily = formula1Font,
+                            color = Color.Black,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        friends.forEach { (name, rank, points) ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text("$rank. $name", fontSize = 16.sp, color = Color.Black)
+                                Text("$points pts", fontSize = 16.sp, color = Color.Gray)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            val currentQuestion = questions[currentQuestionIndex]
+            Column(
+                modifier = Modifier.fillMaxSize().padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = currentQuestion.text, textAlign = TextAlign.Justify,
+                    fontSize = 20.sp, fontFamily = formula1Font, color = Color.White,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+                currentQuestion.options.forEach { option ->
+                    Button(
+                        onClick = {
+                            if (selectedAnswer == null) {
+                                val correct = option == currentQuestion.correctAnswer
+                                answersState.value = answersState.value.toMutableList().apply {
+                                    this[currentQuestionIndex] = Pair(option, correct)
+                                }
+                            }
+                        },
+                        colors = if (selectedAnswer == option) {
+                            if (isAnswerCorrect == true) {
+                                ButtonDefaults.buttonColors(containerColor = Color.Green)
+                            } else {
+                                ButtonDefaults.buttonColors(containerColor = Color.Red)
+                            }
+                        } else {
+                            ButtonDefaults.buttonColors(containerColor = Color.LightGray)
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                            .clip(RoundedCornerShape(8.dp)).shadow(5.dp)
+                    ) {
+                        Text(
+                            text = option, color = Color.Black,
+                            fontSize = 18.sp, fontFamily = formula1Font
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = { if (currentQuestionIndex > 0) { currentQuestionIndex-- } },
+                        enabled = currentQuestionIndex > 0,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                    ) { Text(text = "Previous", color = Color.White) }
+
+                    Button(
+                        onClick = {
+                            if (currentQuestionIndex < questions.lastIndex) { currentQuestionIndex++ }
+                            else { isQuizFinished = true }
+                        },
+                        enabled = selectedAnswer != null,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                    ) { Text(text = "Next", color = Color.White) }
+                }
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
