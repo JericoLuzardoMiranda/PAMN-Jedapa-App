@@ -53,7 +53,6 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
             modifier = Modifier.fillMaxSize().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-
             /////////////////////////////HEADER/////////////////////////////////
             MyHeader(navController = navController, currentScreen = "Teams & Drivers", showBackArrow = true, userViewModel = userViewModel)
             ////////////////////////////////////////////////////////////////////
@@ -62,7 +61,6 @@ fun TeamsDriversScreen(navController: NavHostController, userViewModel: UserView
             if (isTeams){ TeamsBody(modifier = Modifier, teamState) }
             else{ DriversBody(modifier = Modifier, driverState) }
             //////////////////////////////////////////////////////////////////
-
         }
     }
 
