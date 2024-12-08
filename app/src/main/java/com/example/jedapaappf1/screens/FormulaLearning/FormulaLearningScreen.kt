@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,12 +22,16 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
@@ -222,9 +227,7 @@ fun InformationTabContent() {
             modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 5.dp, bottom = 8.dp)
         )
     }
-
 }
-
 
 @Composable
 fun QuizTabContent() {
@@ -248,7 +251,7 @@ fun QuizTabContent() {
             correctAnswer = "Turbocharging"
         ),
         Question(
-            text = "What is the current maximum number of engines allowd per driver for the entire season?",
+            text = "What is the current maximum number of engines allowed per driver for the entire season?",
             options = listOf("2","3","4"),
             correctAnswer = "4"
         ),
@@ -268,68 +271,77 @@ fun QuizTabContent() {
     var currentQuestionIndex by remember { mutableStateOf(0) }
     val currentQuestion = questions[currentQuestionIndex]
 
-    // Estado para la respuesta depende de que si acierta o falla
-    var selectedAnswer by remember { mutableStateOf<String?>(null) }
-    var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
+    // Estado de la respuesta
+    val answersState = remember { mutableStateOf(List(questions.size) { Pair<String?, Boolean?>(null, null) } ) }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    val selectedAnswer = answersState.value[currentQuestionIndex].first
+    val isAnswerCorrect = answersState.value[currentQuestionIndex].second
+
+    Box(
+        modifier = Modifier.fillMaxSize().background(brush = Brush.verticalGradient(
+                colors = listOf(Color.Blue, Color.Red),
+                startY = 0f, endY = Float.POSITIVE_INFINITY
+            ))
     ) {
-        // Se muestra la pregunta
-        Text(
-            text = currentQuestion.text, textAlign = TextAlign.Justify,
-            fontSize = 20.sp, fontFamily = formula1Font,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
-
-        // Se muestra múltiples respuestas
-        currentQuestion.options.forEach { option ->
-            Button(
-                onClick = {
-                    selectedAnswer = option
-                    isAnswerCorrect = (option == currentQuestion.correctAnswer)
-                },
-                colors = if (selectedAnswer == option) {
-                    if (isAnswerCorrect == true) { ButtonDefaults.buttonColors(containerColor = Color.Green) }
-                    else { ButtonDefaults.buttonColors(containerColor = Color.Red) }
-                } else {
-                    ButtonDefaults.buttonColors(containerColor = Color.LightGray)
-                },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-            ) { Text(text = option, color = Color.Black,
-                fontSize = 18.sp, fontFamily = formula1Font) }
-        }
-
-        // Botones "Anterior" y "Siguiente"
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
-                onClick = {
-                    if (currentQuestionIndex > 0) {
-                        currentQuestionIndex--
-                        selectedAnswer = null
-                        isAnswerCorrect = null
-                    }
-                },
-                // Se desactiva el botón si estamos en la primera pregunta
-                enabled = currentQuestionIndex > 0
-            ) { Text(text = "Previous") }
+            // Se muestra la pregunta
+            Text(
+                text = currentQuestion.text, textAlign = TextAlign.Justify,
+                fontSize = 20.sp, fontFamily = formula1Font,
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 20.dp)
+            )
 
-            Button(
-                onClick = {
-                    if (currentQuestionIndex < questions.lastIndex) {
-                        currentQuestionIndex++
-                        selectedAnswer = null
-                        isAnswerCorrect = null
-                    }
-                },
-                // Se desactiva el botón si estamos en la última pregunta
-                enabled = currentQuestionIndex < questions.lastIndex
-            ) { Text(text = "Next") }
+            // Se muestra las opciones de respuestas
+            currentQuestion.options.forEach { option ->
+                Button(
+                    onClick = {
+                        // Se permite seleccionar solamente una respuesta si no está seleccionada
+                        if (selectedAnswer == null) {
+                            val correct = option == currentQuestion.correctAnswer
+                            // Se guarda la respuesta asignada
+                            answersState.value = answersState.value.toMutableList().apply {
+                                this[currentQuestionIndex] = Pair(option, correct)
+                            }
+                        }
+                    },
+                    colors = if (selectedAnswer == option) {
+                        if (isAnswerCorrect == true) { ButtonDefaults.buttonColors(containerColor = Color.Green) }
+                        else { ButtonDefaults.buttonColors(containerColor = Color.Red) }
+                    } else { ButtonDefaults.buttonColors(containerColor = Color.LightGray) },
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                        .clip(RoundedCornerShape(8.dp)).shadow(5.dp)
+                ) {
+                    Text(
+                        text = option, color = Color.Black,
+                        fontSize = 18.sp, fontFamily = formula1Font
+                    )
+                }
+            }
+
+            // Botones "Anterior" y "Siguiente"
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(
+                    onClick = { if (currentQuestionIndex > 0) { currentQuestionIndex-- } },
+                    // Se desactiva el botón si estamos en la primera pregunta
+                    enabled = currentQuestionIndex > 0,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                ) { Text(text = "Previous", color = Color.White) }
+
+                Button(
+                    onClick = { if (currentQuestionIndex < questions.lastIndex) { currentQuestionIndex++ } },
+                    // Se desactiva el botón si estamos en la última pregunta
+                    enabled = currentQuestionIndex < questions.lastIndex,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                ) { Text(text = "Next", color = Color.White) }
+            }
         }
     }
 }
