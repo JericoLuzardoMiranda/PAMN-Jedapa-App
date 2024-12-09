@@ -21,6 +21,8 @@ class UserViewModel : ViewModel() {
     // Almacenar los datos del usuario
     var username by mutableStateOf<String?>(null)
     var email by mutableStateOf<String?>(null)
+    var userId by mutableStateOf<String?>(null)
+
 
     // Función para iniciar sesión
     fun logIn(email: String, password: String, onComplete: (Boolean) -> Unit) {
@@ -30,6 +32,7 @@ class UserViewModel : ViewModel() {
                     val user = firebaseAuth.currentUser
                     username = user?.displayName
                     this.email = user?.email
+                    userId = user?.uid
                     onComplete(true)
                 } else {
                     _isUserLoggedIn.value = false
@@ -53,6 +56,7 @@ class UserViewModel : ViewModel() {
                     _isUserLoggedIn.value = true
                     this.username = username
                     this.email = email
+                    userId = user?.uid
                     onComplete(true)
                 } else { onComplete(false) }
             }
