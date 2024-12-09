@@ -126,8 +126,10 @@ fun AddMainNew(new:News,  navController: NavHostController){
                 // Mockup en caso de no encontrar la imagen
                 Image(
                     painter = painterResource(id = R.drawable.mockup),
-                    contentDescription = "item no encontrado",
-                    modifier = Modifier
+                    contentDescription = "mainNews",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().height(300.dp)
+                        .clickable { navController.navigate("secondaryNews") }
                 )
             }
         }
@@ -189,8 +191,10 @@ fun AddSecondaryNew(new:News){
             // Mockup en caso de no encontrar la imagen
             Image(
                 painter = painterResource(id = R.drawable.mockup),
-                contentDescription = "item no encontrado",
+                contentDescription = "secondaryNews",
                 modifier = Modifier
+                    .size(80.dp)
+                    .weight(0.5f)
             )
         }
     }
