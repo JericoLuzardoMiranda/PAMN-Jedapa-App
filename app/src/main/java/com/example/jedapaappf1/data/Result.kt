@@ -6,5 +6,6 @@ sealed class Result {
     data class DriversSuccess(val items: List<Driver>): Result()
     data class TeamsSuccess(val items: List<Team>): Result()
     data class CalendarSuccess(val items: List<Circuit>): Result()
+    data class HomeSuccess(val items: List<News>): Result()
     data class Error(val exception: Exception): Result()
 }
