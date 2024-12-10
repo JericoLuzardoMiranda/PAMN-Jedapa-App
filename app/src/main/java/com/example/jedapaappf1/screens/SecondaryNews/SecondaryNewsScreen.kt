@@ -92,6 +92,9 @@ fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:S
         DisplayNew(theNews)
         MostReadNews()
     }
+    else{
+        Text("Error 404: News not found")
+    }
 }
 
 @Composable
