@@ -96,7 +96,7 @@ fun HomeBody(modifier: Modifier, homeState: Result?, navController: NavHostContr
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(secondaryNews) { new ->
-            AddSecondaryNew(new)
+            AddSecondaryNew(new, navController)
         }
     }
 }
@@ -120,7 +120,7 @@ fun AddMainNew(new:News,  navController: NavHostController){
                     contentDescription = "mainNews",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxWidth().height(250.dp)
-                        .clickable { navController.navigate("secondaryNews") }
+                        .clickable { navController.navigate("secondaryNews/${new.title}") }
                 )
             }
             else {
@@ -130,7 +130,7 @@ fun AddMainNew(new:News,  navController: NavHostController){
                     contentDescription = "mainNews",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxWidth().height(300.dp)
-                        .clickable { navController.navigate("secondaryNews") }
+                        .clickable { navController.navigate("secondaryNews/${new.title}") }
                 )
             }
         }
@@ -151,12 +151,12 @@ fun AddMainNew(new:News,  navController: NavHostController){
 }
 
 @Composable
-fun AddSecondaryNew(new:News){
+fun AddSecondaryNew(new:News, navController: NavHostController){
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(new.imageRef1, "drawable", context.packageName)
     Row(
-        modifier = Modifier.fillMaxWidth().background(Color(0xFFD3D3D3)).padding(10.dp),
+        modifier = Modifier.fillMaxWidth().background(Color(0xFFD3D3D3)).padding(10.dp).clickable { navController.navigate("secondaryNews/${new.title}")},
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -178,7 +178,7 @@ fun AddSecondaryNew(new:News){
         if (imageResId!=0){
             Image(
                 painter = painterResource(imageResId),
-                contentDescription = "secondaryNews",
+                contentDescription = "secondaryNews/${new.title}",
                 modifier = Modifier.size(80.dp).weight(0.5f)
             )
         }
@@ -186,7 +186,7 @@ fun AddSecondaryNew(new:News){
             // Mockup en caso de no encontrar la imagen
             Image(
                 painter = painterResource(id = R.drawable.mockup),
-                contentDescription = "secondaryNews",
+                contentDescription = "secondaryNews/${new.title}",
                 modifier = Modifier.size(80.dp).weight(0.5f)
             )
         }

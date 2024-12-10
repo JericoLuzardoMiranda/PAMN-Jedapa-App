@@ -28,17 +28,28 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavHostController
 import com.example.jedapaappf1.navigation.MyHeader
 import com.example.jedapaappf1.R
 import com.example.jedapaappf1.UserViewModel
+import com.example.jedapaappf1.data.News
+import com.example.jedapaappf1.data.Result
+import com.example.jedapaappf1.screens.Home.HomeViewModel
 
 @Composable
-fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
-    val formula1Font = FontFamily(Font(R.font.formula1_bold))
-    val image = painterResource(R.drawable.mockup)
+fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), id:String?) {
+    val viewModel: HomeViewModel = viewModel()
+    val homeState by viewModel.homeState.observeAsState()
+    LaunchedEffect(Unit){
+        viewModel.getNews()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -57,112 +68,185 @@ fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserVie
             )
             ////////////////////////////////////////////////////////////////////
 
-            Column(
-                modifier = Modifier.fillMaxSize().padding(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = image, contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth().height(300.dp)
-                    )
-                }
+            SecondaryNewsBody(homeState, navController, id)
 
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "Titular de la Noticia 1",
-                        color = Color.Red, fontSize = 25.sp, fontFamily = formula1Font,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+        }
+    }
+}
 
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do eiusmod",
-                        color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+@Composable
+fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:String?){
+    val news = remember { mutableStateOf<List<News>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
+    when(homeState){
+        is Result.HomeSuccess -> {
+            news.value = homeState.items
+        }
+        is Result.Error -> {
+            showErrorDialog.value = true
+        }
+        else -> {}
+    }
 
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod" +
-                                " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
-                                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea " +
-                                "commodo consequat.",
-                        color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+    val emptyNew = News(
+        id = "null",
+        newsTitle1= "test",
+        newsTitle2= "test",
+        paragraph1= "test",
+        paragraph2= "test",
+        paragraph3= "test",
+        paragraph4= "test",
+        paragraph5= "test",
+        description= "test",
+        imageRef1= "test",
+        imageRef2= "test",
+        title="test",
+        isMain= true
+    )
 
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod" +
-                                " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
-                                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea " +
-                                "commodo consequat.",
-                        color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
-                        modifier = Modifier.padding(bottom = 18.dp)
-                    )
+    val theNews =  news.value.firstOrNull { it.title==id }
+    if (theNews!=null) {
+        DisplayNew(theNews)
+        MostReadNews()
+    }
+    else{
+        DisplayNew(emptyNew)
+        MostReadNews()
+    }
+}
 
-                    Image(
-                        painter = image,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.width(300.dp).height(150.dp).padding(bottom = 18.dp)
-                    )
-
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod" +
-                                " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim " +
-                                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea " +
-                                "commodo consequat.",
-                        color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "Most Read News", color = Color.Red,
-                        fontSize = 25.sp, fontFamily = formula1Font,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        Image(
-                            painter = image,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
-                        )
-
-                        Image(
-                            painter = image, contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
-                        )
-
-                        Image(
-                            painter = image,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
-                        )
-                    }
-
-                }
+@Composable
+fun DisplayNew(news:News){
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val context = LocalContext.current
+    val imageResId = context.resources.getIdentifier(news.imageRef1, "drawable", context.packageName)
+    val imageResId2 = context.resources.getIdentifier(news.imageRef2, "drawable", context.packageName)
+    Column(
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (imageResId!=0){
+                Image(
+                    painter = painterResource(imageResId), contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().height(300.dp)
+                )
+            }
+            else{
+                Image(
+                    painter = painterResource(R.drawable.mockup), contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().height(300.dp)
+                )
             }
         }
+
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = news.newsTitle1,
+                color = Color.Red, fontSize = 25.sp, fontFamily = formula1Font,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Text(
+                text = news.description,
+                color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Text(
+                text = news.paragraph1,
+                color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Text(
+                text = news.paragraph2,
+                color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(bottom = 18.dp)
+            )
+            if (imageResId2!=0){
+                Image(
+                    painter = painterResource(imageResId2),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(300.dp).height(150.dp).padding(bottom = 18.dp)
+                )
+            }
+            else{
+                Image(
+                    painter = painterResource(R.drawable.mockup),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(300.dp).height(150.dp).padding(bottom = 18.dp)
+                )
+            }
+            Text(
+                text = news.paragraph3,
+                color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Text(
+                text = news.paragraph4,
+                color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Text(
+                text = news.paragraph5,
+                color = Color.Black, fontSize = 16.sp, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun MostReadNews(){
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val image = painterResource(R.drawable.mockup)
+    Text(
+        text = "Most Read News", color = Color.Red,
+        fontSize = 25.sp, fontFamily = formula1Font,
+        modifier = Modifier.padding(bottom = 8.dp)
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
+        )
+
+        Image(
+            painter = image, contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
+        )
+
+        Image(
+            painter = image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.weight(1f).padding(4.dp).height(100.dp)
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SecondaryNewsScreenPreview() {
-    SecondaryNewsScreen(navController = NavHostController(LocalContext.current))
+    SecondaryNewsScreen(navController = NavHostController(LocalContext.current), userViewModel = viewModel(), "hamilton")
 }
 

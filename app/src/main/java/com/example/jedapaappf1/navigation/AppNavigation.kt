@@ -3,10 +3,12 @@ package com.example.jedapaappf1.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 //import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.jedapaappf1.UserViewModel
 import com.example.jedapaappf1.screens.AddFriends.AddFriendsScreen
 import com.example.jedapaappf1.screens.Calendar.CalendarScreen
@@ -37,7 +39,13 @@ fun AppNavigation() {
         composable("calendar"){ CalendarScreen(navController, userViewModel) }
         composable("formulaLearning"){ FormulaLearningScreen(navController, userViewModel) }
         composable("addFriends"){ AddFriendsScreen(navController, userViewModel) }
-        composable("secondaryNews"){ SecondaryNewsScreen(navController, userViewModel) }
+        composable(
+            route = "secondaryNews/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id")
+            SecondaryNewsScreen(navController, userViewModel, id)
+        }
         composable("typeNews"){ TypeNewsScreen(navController, userViewModel) }
     }
 }
