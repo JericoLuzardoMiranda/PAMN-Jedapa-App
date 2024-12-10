@@ -87,30 +87,9 @@ fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:S
         }
         else -> {}
     }
-
-    val emptyNew = News(
-        id = "null",
-        newsTitle1= "test",
-        newsTitle2= "test",
-        paragraph1= "test",
-        paragraph2= "test",
-        paragraph3= "test",
-        paragraph4= "test",
-        paragraph5= "test",
-        description= "test",
-        imageRef1= "test",
-        imageRef2= "test",
-        title="test",
-        isMain= true
-    )
-
     val theNews =  news.value.firstOrNull { it.title==id }
     if (theNews!=null) {
         DisplayNew(theNews)
-        MostReadNews()
-    }
-    else{
-        DisplayNew(emptyNew)
         MostReadNews()
     }
 }
