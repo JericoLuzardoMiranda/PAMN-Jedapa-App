@@ -9,16 +9,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -58,82 +55,95 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.asImageBitmap
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun AddFriendsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()){
+fun AddFriendsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
-    var selectedTabIndex by remember { mutableStateOf(0) }
-
-    var resultadoEscaneo by remember { mutableStateOf("") }
-    val scanLauncher = rememberLauncherForActivityResult(
-        contract = ScanContract(),
-        onResult = {  result ->
-            resultadoEscaneo = result.contents?:"Sin resultado"
-        }
-    )
+    val pagerState = rememberPagerState(initialPage = 0) // Controla las páginas
+    val coroutineScope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(
             modifier = Modifier.fillMaxSize().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             /////////////////////////////HEADER/////////////////////////////////
             MyHeader(navController = navController, currentScreen = "Add friends",
                 showBackArrow = true, userViewModel = userViewModel
             )
             ////////////////////////////////////////////////////////////////////
 
+            // TabRow con sincronización al pagerState
             TabRow(
-                selectedTabIndex = selectedTabIndex,
+                selectedTabIndex = pagerState.currentPage,
                 containerColor = Color(0xFF294D61),
                 contentColor = Color.White,
                 indicator = { tabPositions ->
                     Box(
                         Modifier
-                            .tabIndicatorOffset(tabPositions[selectedTabIndex])
+                            .tabIndicatorOffset(tabPositions[pagerState.currentPage])
                             .height(4.dp).background(Color(0xFFFE0809))
                     )
                 }
             ) {
+
                 Tab(
-                    selected = selectedTabIndex == 0,
-                    onClick = { selectedTabIndex = 0 },
+                    selected = pagerState.currentPage == 0,
+                    onClick = {
+                        coroutineScope.launch { pagerState.animateScrollToPage(0) }
+                    },
                     text = {
                         Text(
                             text = "My Code",
-                            color = if (selectedTabIndex == 0) Color.White else Color.LightGray,
+                            color = if (pagerState.currentPage == 0) Color.White else Color.LightGray,
                             fontSize = 18.sp, fontFamily = formula1Font
                         )
                     }
                 )
 
                 Tab(
-                    selected = selectedTabIndex == 1,
-                    onClick = { selectedTabIndex = 1 },
+                    selected = pagerState.currentPage == 1,
+                    onClick = {
+                        coroutineScope.launch { pagerState.animateScrollToPage(1) }
+                    },
                     text = {
                         Text(
                             text = "Scan Code",
-                            color = if (selectedTabIndex == 1) Color.White else Color.LightGray,
+                            color = if (pagerState.currentPage == 1) Color.White else Color.LightGray,
                             fontSize = 18.sp, fontFamily = formula1Font
                         )
                     }
                 )
             }
 
-            when (selectedTabIndex) {
-                0 -> MyCodeTabContent(userViewModel)
-                1 -> ScanCodeTabContent()
+            // HorizontalPager para deslizar entre pantallas
+            HorizontalPager(
+                state = pagerState, count = 2,
+                modifier = Modifier.weight(2f)
+            ) { page ->
+                when (page) {
+                    0 -> MyCodeTabContent(userViewModel)
+                    1 -> ScanCodeTabContent()
+                }
             }
         }
     }
-
 }
+
 
 @Composable
 fun MyCodeTabContent(userViewModel: UserViewModel = viewModel()) {
