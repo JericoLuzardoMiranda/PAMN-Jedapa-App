@@ -62,7 +62,7 @@ fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserVie
 
             /////////////////////////////HEADER/////////////////////////////////
             MyHeader(
-                navController = navController, currentScreen = "Secondary News",
+                navController = navController, currentScreen = "",
                 showBackArrow = true, userViewModel = userViewModel
             )
             ////////////////////////////////////////////////////////////////////
@@ -87,13 +87,16 @@ fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:S
         else -> {}
     }
     val theNews =  news.value.firstOrNull { it.title==id }
-    if (theNews!=null) {
-        DisplayNew(theNews)
-        MostReadNews()
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        if (theNews!=null) {
+            DisplayNew(theNews)
+            MostReadNews()
+        }
+        else{
+            Text("Error 404: News not found")
+        }
     }
-    else{
-        Text("Error 404: News not found")
-    }
+
 }
 
 @Composable
@@ -103,7 +106,7 @@ fun DisplayNew(news:News){
     val imageResId = context.resources.getIdentifier(news.imageRef1, "drawable", context.packageName)
     val imageResId2 = context.resources.getIdentifier(news.imageRef2, "drawable", context.packageName)
     Column(
-        modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxSize().padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
