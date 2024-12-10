@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,11 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,18 +75,25 @@ fun TeamsBody(modifier: Modifier, teamState: Result?){
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val teams = remember { mutableStateOf<List<Team>>(listOf()) }
     val showErrorDialog = remember { mutableStateOf(false) }
+
+    val radialBrush = Brush.radialGradient(
+        colors = listOf(Color(0xFF98FF98), Color(0xFF2E8B57)),
+        radius = 1000f
+    )
+
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(radialBrush),
         contentAlignment = Alignment.Center
     ){
+
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White).verticalScroll(scrollState),
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
                 text = "Teams", color = Color.Black,
                 modifier = Modifier.padding(vertical = 20.dp),
-                fontSize = 25.sp, fontFamily = formula1Font
+                fontSize = 40.sp, fontFamily = formula1Font
             )
             when(teamState){
                 is Result.TeamsSuccess -> {
@@ -108,18 +118,24 @@ fun DriversBody(modifier: Modifier, driverState: Result?){
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val drivers = remember { mutableStateOf<List<Driver>>(listOf()) }
     val showErrorDialog = remember { mutableStateOf(false) }
+
+    val radialBrush = Brush.radialGradient(
+        colors = listOf(Color(0xFFFF5733), Color(0xFFFFC300)),
+        radius = 1000f
+    )
+
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(radialBrush),
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White).verticalScroll(scrollState),
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
                 text = "Drivers", color = Color.Black,
                 modifier = Modifier.padding(vertical = 20.dp),
-                fontSize = 25.sp, fontFamily = formula1Font
+                fontSize = 40.sp, fontFamily = formula1Font
             )
             when(driverState){
                 is Result.DriversSuccess -> {
@@ -143,11 +159,9 @@ fun AddItem(name:String, image:String, description:String){
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val isItemExpanded = remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.padding(vertical = 20.dp)
-            .background(color = Color(0xFFD7E7F7))
-            .width(250.dp)
-            .padding(horizontal = 20.dp)
-            .padding(vertical = 20.dp)
+        modifier = Modifier.padding(vertical = 30.dp)
+            .background(color = Color(0xFFD7E7F7), shape = RoundedCornerShape(16.dp))
+            .width(300.dp).padding(horizontal = 20.dp).padding(vertical = 30.dp)
             .clickable { isItemExpanded.value = true },
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -170,14 +184,14 @@ fun AddItem(name:String, image:String, description:String){
         }
         Text(
             text=name,
-            fontSize = 15.sp, fontFamily = formula1Font,
-            modifier = Modifier.padding(vertical=10.dp)
+            fontSize = 20.sp, fontFamily = formula1Font,
+            modifier = Modifier.padding(vertical=15.dp)
         )
         if (isItemExpanded.value){
             Text(
                 text=description,
-                fontSize = 10.sp, fontFamily = formula1Font,
-                modifier = Modifier.padding(vertical=10.dp)
+                fontSize = 14.sp, fontFamily = formula1Font, textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(vertical=15.dp)
                     .clickable { isItemExpanded.value = false }
             )
         }

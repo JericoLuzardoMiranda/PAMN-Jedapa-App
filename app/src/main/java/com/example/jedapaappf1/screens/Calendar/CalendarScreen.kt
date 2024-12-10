@@ -120,7 +120,7 @@ fun AddCircuit(circuit: Circuit) {
     val imageResId = context.resources.getIdentifier(circuit.name+"_circuit", "drawable", context.packageName)
 
     Box(
-        modifier = Modifier.padding(8.dp).width(350.dp).height(250.dp)
+        modifier = Modifier.padding(8.dp).width(300.dp).height(200.dp)
             .clickable { isFlipped = !isFlipped }
             .graphicsLayer {
                 rotationY = rotation
@@ -135,7 +135,7 @@ fun AddCircuit(circuit: Circuit) {
             if (imageResId != 0) {
                 Image(
                     painter = painterResource(imageResId),
-                    contentDescription = "Circuito de " + circuit.location,
+                    contentDescription = "Circuit of " + circuit.location,
                     modifier = Modifier.fillMaxSize().alpha(frontAlpha),
                     contentScale = ContentScale.Crop
                 )
@@ -159,7 +159,7 @@ fun AddCircuit(circuit: Circuit) {
             ) {
                 // Título del circuito
                 Text(
-                    text = "Circuito de "+circuit.location,
+                    text = "Circuit of "+circuit.location,
                     fontSize = 18.sp, fontFamily = formula1Font,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
@@ -176,33 +176,16 @@ fun AddCircuit(circuit: Circuit) {
 }
 
 @Composable
-fun AddEvent (name:String, date:String){
-    // Lista de eventos, fechas y horas
+fun AddEvent(name: String, date: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
-        // Columna para el evento
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = name, fontSize = 16.sp,
-                color = Color.Black, textAlign = TextAlign.Center
-            )
-        }
-
-        // Columna para la fecha
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = date, fontSize = 16.sp,
-                color = Color.Black, textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            text = "$name: $date",
+            fontSize = 16.sp, color = Color.Black, textAlign = TextAlign.Start,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
     }
 }
 

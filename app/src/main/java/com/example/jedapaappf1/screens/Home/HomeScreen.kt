@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -118,7 +119,7 @@ fun AddMainNew(new:News,  navController: NavHostController){
                     painter = painterResource(imageResId),
                     contentDescription = "mainNews",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth().height(300.dp)
+                    modifier = Modifier.fillMaxWidth().height(250.dp)
                         .clickable { navController.navigate("secondaryNews") }
                 )
             }
@@ -151,30 +152,26 @@ fun AddMainNew(new:News,  navController: NavHostController){
 
 @Composable
 fun AddSecondaryNew(new:News){
+    val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(new.imageRef1, "drawable", context.packageName)
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFD3D3D3))
-            .padding(10.dp),
+        modifier = Modifier.fillMaxWidth().background(Color(0xFFD3D3D3)).padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(end = 15.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = new.title,
-                color = Color.Red,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                text = new.title, color = Color.Red,
+                fontSize = 14.sp, fontFamily = formula1Font,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
-                text = new.description,
-                color = Color.Black,
+                text = new.description, textAlign = TextAlign.Justify,
+                color = Color.Black, fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
         }
@@ -182,9 +179,7 @@ fun AddSecondaryNew(new:News){
             Image(
                 painter = painterResource(imageResId),
                 contentDescription = "secondaryNews",
-                modifier = Modifier
-                    .size(80.dp)
-                    .weight(0.5f)
+                modifier = Modifier.size(80.dp).weight(0.5f)
             )
         }
         else {
@@ -192,9 +187,7 @@ fun AddSecondaryNew(new:News){
             Image(
                 painter = painterResource(id = R.drawable.mockup),
                 contentDescription = "secondaryNews",
-                modifier = Modifier
-                    .size(80.dp)
-                    .weight(0.5f)
+                modifier = Modifier.size(80.dp).weight(0.5f)
             )
         }
     }

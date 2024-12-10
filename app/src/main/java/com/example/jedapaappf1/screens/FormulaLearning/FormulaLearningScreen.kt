@@ -416,7 +416,7 @@ fun QuizTabContent() {
                             ButtonDefaults.buttonColors(containerColor = Color.LightGray)
                         },
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                            .clip(RoundedCornerShape(8.dp)).shadow(5.dp)
+                            .clip(RoundedCornerShape(8.dp))
                     ) {
                         Text(
                             text = option, color = Color.Black,
