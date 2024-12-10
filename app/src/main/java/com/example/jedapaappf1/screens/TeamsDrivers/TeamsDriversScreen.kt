@@ -77,7 +77,7 @@ fun TeamsBody(modifier: Modifier, teamState: Result?){
     val showErrorDialog = remember { mutableStateOf(false) }
 
     val radialBrush = Brush.radialGradient(
-        colors = listOf(Color(0xFF98FF98), Color(0xFF2E8B57)),
+        colors = listOf(Color(0xFF294D61), Color(0xFF6DA5C0)),
         radius = 1000f
     )
 
@@ -120,7 +120,7 @@ fun DriversBody(modifier: Modifier, driverState: Result?){
     val showErrorDialog = remember { mutableStateOf(false) }
 
     val radialBrush = Brush.radialGradient(
-        colors = listOf(Color(0xFFFF5733), Color(0xFFFFC300)),
+        colors = listOf(Color(0xFF294D61), Color(0xFF6DA5C0)),
         radius = 1000f
     )
 
