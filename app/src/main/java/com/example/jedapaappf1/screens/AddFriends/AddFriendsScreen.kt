@@ -55,6 +55,11 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
@@ -64,6 +69,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -150,8 +156,9 @@ fun MyCodeTabContent(userViewModel: UserViewModel = viewModel()) {
     val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val username = userViewModel.username ?: "User"
     val userId = userViewModel.userId ?: "no_id"
+    val userEmail = userViewModel.email ?: "no_email"
 
-    val qrCodeBitmap = generateQRCode("$username:$userId")
+    val qrCodeBitmap = generateQRCode("$username:$userId:$userEmail")
 
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xFFEFEFEF)),
@@ -218,21 +225,36 @@ fun generateQRCode(content: String): Bitmap? {
     }
 }
 
+
 @Composable
 fun ScanCodeTabContent() {
     var scannedResult by remember { mutableStateOf("") }
-    val scanLauncher = rememberLauncherForActivityResult(
-        contract = ScanContract(),
-        onResult = { result -> scannedResult = result.contents ?: "No result" }
+    var scannedName by remember { mutableStateOf("") }
+    var scannedEmail by remember { mutableStateOf("") }
+    var isFriendAdded by remember { mutableStateOf(false) }
+
+    val radialBrush = Brush.radialGradient(
+        colors = listOf(Color(0xFF294D61), Color(0xFF6DA5C0)),
+        radius = 1000f
     )
 
+    val scanLauncher = rememberLauncherForActivityResult(
+        contract = ScanContract(),
+        onResult = { result ->
+            scannedResult = result.contents ?: "No result"
+            val parts = scannedResult.split(":")
+            if (parts.size == 3) {
+                scannedName = parts[0]
+                scannedEmail = parts[2]
+            }
+        }
+    )
+
+    val firestore = FirebaseFirestore.getInstance()
+    val snackbarHostState = remember { SnackbarHostState() } // Para mostrar un mensaje después de añadir amigo
+
     Box(
-        modifier = Modifier.fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(Color(0xFF6200EE), Color(0xFF3700B3))
-                )
-            )
+        modifier = Modifier.fillMaxSize().background(radialBrush)
     ) {
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -252,8 +274,7 @@ fun ScanCodeTabContent() {
                     containerColor = Color(0xFF03DAC5),
                     contentColor = Color.Black
                 ),
-                modifier = Modifier.padding(8.dp)
-                    .shadow(8.dp, shape = RoundedCornerShape(16.dp))
+                modifier = Modifier.padding(8.dp).shadow(8.dp, shape = RoundedCornerShape(16.dp))
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.qr_code_scanner),
@@ -269,25 +290,76 @@ fun ScanCodeTabContent() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.elevatedCardElevation(8.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFEDEDED))
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+            if (scannedResult.isNotEmpty() && !isFriendAdded) {
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.elevatedCardElevation(2.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFFFF))
                 ) {
-                    Text(text = "Scanned Result:", fontSize = 14.sp, color = Color.Gray)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = scannedResult.ifEmpty { "No result scanned" },
-                        fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                        color = Color(0xFF333333)
-                    )
+                    Row(
+                        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = scannedName,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF075E54)
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = scannedEmail,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color(0xFF757575)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        // Botón con ícono para añadir amigo
+                        IconButton(
+                            onClick = {
+                                val friendData = hashMapOf(
+                                    "name" to scannedName,
+                                    "email" to scannedEmail
+                                )
+                                firestore.collection("friends")
+                                    .add(friendData).addOnSuccessListener { documentReference ->
+                                        println("Friend added with ID: ${documentReference.id}")
+                                        isFriendAdded = true
+                                    }
+                                    .addOnFailureListener { e ->
+                                        println("Error adding friend: $e")
+                                    }
+                            },
+                            modifier = Modifier.clip(CircleShape).size(48.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.add_person_icon),
+                                contentDescription = "Add friend", tint = Color(0xFF075E54),
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
+                    }
                 }
             }
+        }
+
+        // Se muestra un mensaje al añadir un amigo
+        if (isFriendAdded) {
+            LaunchedEffect(isFriendAdded) {
+                snackbarHostState.showSnackbar("Friend added successfully!")
+            }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }
