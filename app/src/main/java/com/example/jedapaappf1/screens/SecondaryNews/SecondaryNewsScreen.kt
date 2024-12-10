@@ -56,8 +56,7 @@ fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserVie
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().background(Color.White)
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -104,7 +103,7 @@ fun DisplayNew(news:News){
     val imageResId = context.resources.getIdentifier(news.imageRef1, "drawable", context.packageName)
     val imageResId2 = context.resources.getIdentifier(news.imageRef2, "drawable", context.packageName)
     Column(
-        modifier = Modifier.fillMaxSize().padding(10.dp),
+        modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
