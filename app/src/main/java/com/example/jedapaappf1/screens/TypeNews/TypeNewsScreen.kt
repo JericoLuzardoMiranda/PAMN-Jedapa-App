@@ -25,19 +25,33 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavHostController
 import com.example.jedapaappf1.navigation.MyHeader
 import com.example.jedapaappf1.R
 import com.example.jedapaappf1.UserViewModel
-import java.nio.file.WatchEvent
+import com.example.jedapaappf1.data.News
+import com.example.jedapaappf1.data.Result
 
 @Composable
-fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
-    val formula1Font = FontFamily(Font(R.font.formula1_bold))
-    val image = painterResource(R.drawable.mockup)
+fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), type:String) {
+    val viewModel: TypeNewsViewModel = viewModel()
+    val interviewsState by viewModel.interviewsState.observeAsState()
+    val gamesState by viewModel.gamesState.observeAsState()
+    val raceSummariesState by viewModel.raceSummariesState.observeAsState()
+    val teamsDriversState by viewModel.teamsDriversState.observeAsState()
+    LaunchedEffect(Unit){
+        viewModel.getInterviews()
+        viewModel.getGames()
+        viewModel.getRaceSummaries()
+        viewModel.getTeamsDrivers()
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -54,37 +68,69 @@ fun TypeNewsScreen(navController: NavHostController, userViewModel: UserViewMode
             )
             ////////////////////////////////////////////////////////////////////
 
-            Column(
-                modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                NewsItem(image = image, title = "News 1")
-                Spacer(modifier = Modifier.height(30.dp))
-                NewsItem(image = image, title = "News 2")
-                Spacer(modifier = Modifier.height(30.dp))
-                NewsItem(image = image, title = "News 3")
-                Spacer(modifier = Modifier.height(30.dp))
-                NewsItem(image = image, title = "News 4")
-                Spacer(modifier = Modifier.height(30.dp))
-                NewsItem(image = image, title = "News 5")
+            when(type){
+                "interviews" -> TypeNewsBody(interviewsState, navController)
+                "games" -> TypeNewsBody(gamesState, navController)
+                "raceSummaries" -> TypeNewsBody(raceSummariesState, navController)
+                "teamsDrivers" -> TypeNewsBody(teamsDriversState, navController)
+                else -> TypeNewsBody(interviewsState, navController)
             }
+
         }
     }
 }
 
 @Composable
-fun NewsItem(image: Painter, title: String) {
+fun TypeNewsBody(newsState: Result?, navController: NavHostController){
+    val news = remember { mutableStateOf<List<News>>(listOf()) }
+    val showErrorDialog = remember { mutableStateOf(false) }
+    when(newsState){
+        is Result.HomeSuccess -> {
+            news.value = newsState.items
+        }
+        is Result.Error -> {
+            showErrorDialog.value = true
+        }
+        else -> {}
+    }
+    Column(
+        modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for (new in news.value){
+            NewsItem(new)
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+    }
+}
+
+@Composable
+fun NewsItem(news: News) {
+    //val formula1Font = FontFamily(Font(R.font.formula1_bold))
+    val context = LocalContext.current
+    val imageResId = context.resources.getIdentifier(news.imageRef1, "drawable", context.packageName)
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Imagen de la noticia
-        Image(
-            painter = image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth().height(200.dp)
-        )
+        if (imageResId!=0){
+            Image(
+                painter = painterResource(imageResId),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth().height(200.dp)
+            )
+        }
+        else{
+            Image(
+                painter = painterResource(R.drawable.mockup),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth().height(200.dp)
+            )
+        }
+
 
         // Cuadro de texto debajo de la imagen
         Box(
@@ -92,7 +138,7 @@ fun NewsItem(image: Painter, title: String) {
                 .padding(8.dp).align(Alignment.CenterHorizontally)
         ) {
             Text(
-                text = title, color = Color.Black, fontSize = 25.sp,
+                text = news.title, color = Color.Black, fontSize = 25.sp,
                 fontFamily = FontFamily(Font(R.font.formula1_bold)),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.Center)
@@ -106,6 +152,6 @@ fun NewsItem(image: Painter, title: String) {
 @Preview(showBackground = true)
 @Composable
 fun TypeNewsScreenPreview() {
-    TypeNewsScreen(navController = NavHostController(LocalContext.current))
+    TypeNewsScreen(navController = NavHostController(LocalContext.current), userViewModel = viewModel(), "interviews")
 }
 

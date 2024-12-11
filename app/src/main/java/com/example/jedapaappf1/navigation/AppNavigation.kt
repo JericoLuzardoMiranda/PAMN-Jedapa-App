@@ -48,7 +48,10 @@ fun AppNavigation() {
             val id = backStackEntry.arguments?.getString("id")
             SecondaryNewsScreen(navController, userViewModel, id)
         }
-        composable("typeNews"){ TypeNewsScreen(navController, userViewModel) }
+        composable("interviews"){ TypeNewsScreen(navController, userViewModel, type="interviews") }
+        composable("games"){ TypeNewsScreen(navController, userViewModel, type="games") }
+        composable("raceSummaries"){ TypeNewsScreen(navController, userViewModel, type="raceSummaries") }
+        composable("teamsDrivers"){ TypeNewsScreen(navController, userViewModel, type="teamsDrivers") }
     }
 }
 
