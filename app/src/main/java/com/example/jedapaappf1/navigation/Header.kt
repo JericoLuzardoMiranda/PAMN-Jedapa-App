@@ -133,6 +133,13 @@ fun MyHeader(navController: NavHostController, currentScreen: String, showBackAr
                         }
                     )
                     DropdownMenuItem(
+                        text = { Text("Friends") },
+                        onClick = {
+                            isUserMenuExpanded.value = false
+                            navController.navigate("listFriends")
+                        }
+                    )
+                    DropdownMenuItem(
                         text = { Text("Log out") },
                         onClick = {
                             isUserMenuExpanded.value = false

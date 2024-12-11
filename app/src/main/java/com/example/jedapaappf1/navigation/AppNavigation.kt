@@ -13,6 +13,7 @@ import com.example.jedapaappf1.UserViewModel
 import com.example.jedapaappf1.screens.AddFriends.AddFriendsScreen
 import com.example.jedapaappf1.screens.Calendar.CalendarScreen
 import com.example.jedapaappf1.screens.FormulaLearning.FormulaLearningScreen
+import com.example.jedapaappf1.screens.Friends.FriendsScreen
 import com.example.jedapaappf1.screens.Home.HomeScreen
 import com.example.jedapaappf1.screens.Login.LoginScreen
 import com.example.jedapaappf1.screens.Register.RegisterConfirmationScreen
@@ -39,6 +40,7 @@ fun AppNavigation() {
         composable("calendar"){ CalendarScreen(navController, userViewModel) }
         composable("formulaLearning"){ FormulaLearningScreen(navController, userViewModel) }
         composable("addFriends"){ AddFriendsScreen(navController, userViewModel) }
+        composable("listFriends"){ FriendsScreen(navController, userViewModel) }
         composable(
             route = "secondaryNews/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
@@ -49,4 +51,6 @@ fun AppNavigation() {
         composable("typeNews"){ TypeNewsScreen(navController, userViewModel) }
     }
 }
+
+
 
