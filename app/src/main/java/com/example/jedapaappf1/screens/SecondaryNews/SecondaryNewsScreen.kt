@@ -42,13 +42,23 @@ import com.example.jedapaappf1.UserViewModel
 import com.example.jedapaappf1.data.News
 import com.example.jedapaappf1.data.Result
 import com.example.jedapaappf1.screens.Home.HomeViewModel
+import com.example.jedapaappf1.screens.TypeNews.TypeNewsViewModel
 
 @Composable
 fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserViewModel = viewModel(), id:String?) {
     val viewModel: HomeViewModel = viewModel()
+    val viewModel2: TypeNewsViewModel = viewModel()
     val homeState by viewModel.homeState.observeAsState()
+    val interviewsState by viewModel2.interviewsState.observeAsState()
+    val gamesState by viewModel2.gamesState.observeAsState()
+    val raceSummariesState by viewModel2.raceSummariesState.observeAsState()
+    val teamsDriversState by viewModel2.teamsDriversState.observeAsState()
     LaunchedEffect(Unit){
         viewModel.getNews()
+        viewModel2.getInterviews()
+        viewModel2.getGames()
+        viewModel2.getRaceSummaries()
+        viewModel2.getTeamsDrivers()
     }
 
     Box(
@@ -67,14 +77,14 @@ fun SecondaryNewsScreen(navController: NavHostController, userViewModel: UserVie
             )
             ////////////////////////////////////////////////////////////////////
 
-            SecondaryNewsBody(homeState, navController, id)
+            SecondaryNewsBody(homeState, interviewsState, gamesState, raceSummariesState, teamsDriversState,  navController, id)
 
         }
     }
 }
 
 @Composable
-fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:String?){
+fun SecondaryNewsBody(homeState: Result?, interviewsState: Result?, gamesState: Result?, raceSummariesState: Result?, teamsDriversState: Result?, navController: NavHostController, id:String?){
     val news = remember { mutableStateOf<List<News>>(listOf()) }
     val showErrorDialog = remember { mutableStateOf(false) }
     when(homeState){
@@ -86,11 +96,65 @@ fun SecondaryNewsBody(homeState: Result?, navController: NavHostController, id:S
         }
         else -> {}
     }
-    val theNews =  news.value.firstOrNull { it.title==id }
+
+    var theNews =  news.value.firstOrNull { it.title==id }
+
+    if(theNews==null){
+        when(interviewsState){
+            is Result.HomeSuccess -> {
+                news.value = interviewsState.items
+            }
+            is Result.Error -> {
+                showErrorDialog.value = true
+            }
+            else -> {}
+        }
+        theNews =  news.value.firstOrNull { it.title==id }
+    }
+
+    if(theNews==null){
+        when(gamesState){
+            is Result.HomeSuccess -> {
+                news.value = gamesState.items
+            }
+            is Result.Error -> {
+                showErrorDialog.value = true
+            }
+            else -> {}
+        }
+        theNews =  news.value.firstOrNull { it.title==id }
+    }
+
+    if(theNews==null){
+        when(raceSummariesState){
+            is Result.HomeSuccess -> {
+                news.value = raceSummariesState.items
+            }
+            is Result.Error -> {
+                showErrorDialog.value = true
+            }
+            else -> {}
+        }
+        theNews =  news.value.firstOrNull { it.title==id }
+    }
+
+    if(theNews==null){
+        when(teamsDriversState){
+            is Result.HomeSuccess -> {
+                news.value = teamsDriversState.items
+            }
+            is Result.Error -> {
+                showErrorDialog.value = true
+            }
+            else -> {}
+        }
+        theNews =  news.value.firstOrNull { it.title==id }
+    }
+
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         if (theNews!=null) {
             DisplayNew(theNews)
-            MostReadNews()
+            //MostReadNews()
         }
         else{
             Text("Error 404: News not found")
@@ -134,13 +198,13 @@ fun DisplayNew(news:News){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = news.newsTitle1,
+                text = news.title,
                 color = Color.Red, fontSize = 25.sp, fontFamily = formula1Font,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
-                text = news.description,
+                text = news.newsTitle2,
                 color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )

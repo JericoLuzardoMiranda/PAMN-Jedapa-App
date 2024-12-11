@@ -3,6 +3,7 @@ package com.example.jedapaappf1.screens.TypeNews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -98,19 +99,19 @@ fun TypeNewsBody(newsState: Result?, navController: NavHostController){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         for (new in news.value){
-            NewsItem(new)
+            NewsItem(new, navController)
             Spacer(modifier = Modifier.height(30.dp))
         }
     }
 }
 
 @Composable
-fun NewsItem(news: News) {
+fun NewsItem(news: News,  navController: NavHostController) {
     //val formula1Font = FontFamily(Font(R.font.formula1_bold))
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(news.imageRef1, "drawable", context.packageName)
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { navController.navigate("secondaryNews/${news.title}") },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Imagen de la noticia
