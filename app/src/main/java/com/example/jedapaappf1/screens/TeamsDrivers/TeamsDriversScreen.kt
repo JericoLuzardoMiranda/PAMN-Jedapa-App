@@ -1,16 +1,21 @@
 package com.example.jedapaappf1.screens.TeamsDrivers
 
 import androidx.compose.foundation.Image
+import androidx.compose.material3.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -187,12 +192,24 @@ fun AddItem(name:String, image:String, description:String){
             fontSize = 20.sp, fontFamily = formula1Font,
             modifier = Modifier.padding(vertical=15.dp)
         )
+        if (!isItemExpanded.value){
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = "keyboard arrow down",
+                modifier = Modifier.size(24.dp)
+            )
+        }
         if (isItemExpanded.value){
             Text(
                 text=description,
                 fontSize = 14.sp, fontFamily = formula1Font, textAlign = TextAlign.Justify,
                 modifier = Modifier.padding(vertical=15.dp)
                     .clickable { isItemExpanded.value = false }
+            )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowUp,
+                contentDescription = "keyboard arrow down",
+                modifier = Modifier.size(24.dp).clickable { isItemExpanded.value = false }
             )
         }
     }
