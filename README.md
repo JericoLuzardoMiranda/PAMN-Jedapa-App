@@ -5,6 +5,7 @@
 - Objetivos
 - Diseño
 - Arquitectura
+- Configuración y uso de la aplicación con Firebase
 - Funcionalidades
 - Conclusiones
 - Autores
@@ -24,7 +25,12 @@ A su vez, con nuestra sección de Formula Learning buscamos enriquecer los conoc
 Por último, otro objetivo muy importante que hemos tenido en cuenta en todo momento ha sido el realizar la app de la manera más accesible e intuitiva posible.
 
 ## 🎨 Diseño
+Hemos creado el diseño de la aplicación para que sea simple, intuitivo y agradable a la vista. Nos aseguramos de que cada pantalla permita a los usuarios encontrar rápidamente la información que necesitan sobre la Fórmula 1. Puedes explorar el diseño completo en Figma con este enlace: 
+
+🔗 [Ver diseño de la aplicación](https://www.figma.com/design/dETqsLOfUzrJcf1agbRB84/PAMN?node-id=0-1&t=bl7hJFAwDr7pgkNr-1)
+
 ## 🗂️ Arquitectura
+## 📲 Configuración y uso de la aplicación con Firebase
 ## ⚙️ Funcionalidades
 ## 📌 Conclusiones
 
